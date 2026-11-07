@@ -88,3 +88,4 @@ HiveSmart targets search intent across multiple regions without duplicate conten
 - [x] Semantic heading hierarchy (`<h1>` through `<h3>`) with zero skipped levels
 - [x] `robots.txt` dynamic endpoint allowing Googlebot and pointing to `sitemap-index.xml`
 - [x] Zero-broken internal links and responsive image attributes (`width`, `height`, `loading="lazy"`)
+

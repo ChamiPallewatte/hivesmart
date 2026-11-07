@@ -1,63 +1,62 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <defs>
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#090d16" />
-      <stop offset="100%" stop-color="#0f172a" />
+      <stop offset="0%" stop-color="#050e22" />
+      <stop offset="50%" stop-color="#081736" />
+      <stop offset="100%" stop-color="#0a1935" />
     </linearGradient>
-    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0284c7" />
-      <stop offset="50%" stop-color="#2563eb" />
-      <stop offset="100%" stop-color="#10b981" />
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
     </linearGradient>
   </defs>
   
   <!-- Background -->
   <rect width="1200" height="630" fill="url(#bgGrad)" />
   
-  <!-- Decorative Grid & Tech Rings -->
-  <g opacity="0.12" stroke="#38bdf8" stroke-width="1">
-    <circle cx="1050" cy="150" r="300" fill="none" />
-    <circle cx="1050" cy="150" r="200" fill="none" />
-    <circle cx="1050" cy="150" r="100" fill="none" />
+  <!-- Honeycomb Geometric Circuit Rings -->
+  <g opacity="0.12" stroke="#f59e0b" stroke-width="1.5">
+    <polygon points="1050,40 1150,100 1150,220 1050,280 950,220 950,100" fill="none" />
+    <polygon points="1050,80 1115,120 1115,195 1050,235 985,195 985,120" fill="none" />
+    <circle cx="1050" cy="160" r="12" fill="#f59e0b" />
   </g>
 
   <!-- Brand Logo & Badge -->
   <g transform="translate(100, 100)">
-    <polygon points="30,4 54,18 54,46 30,60 6,46 6,18" fill="#1e293b" stroke="url(#primaryGrad)" stroke-width="3" />
-    <path d="M25 26 L20 32 L25 38" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
-    <path d="M35 26 L40 32 L35 38" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" />
-    <text x="75" y="42" fill="#ffffff" font-family="system-ui, sans-serif" font-size="34" font-weight="800" letter-spacing="-0.5">HiveSmart</text>
-    <text x="245" y="42" fill="#10b981" font-family="system-ui, sans-serif" font-size="34" font-weight="400">.</text>
+    <!-- Honeycomb Mark -->
+    <polygon points="30,4 54,18 54,46 30,60 6,46 6,18" fill="#081736" stroke="url(#goldGrad)" stroke-width="3" />
+    <path d="M22 24 L22 40 M22 32 L38 32 M38 24 L38 40" stroke="url(#goldGrad)" stroke-width="2.5" stroke-linecap="round" />
+    <text x="75" y="42" fill="#ffffff" font-family="system-ui, sans-serif" font-size="36" font-weight="900" letter-spacing="-0.5">Hive <tspan fill="#f59e0b">smart</tspan></text>
   </g>
 
-  <!-- Location Badges -->
+  <!-- Regional Hub Badges -->
   <g transform="translate(100, 195)">
-    <rect x="0" y="0" width="170" height="36" rx="18" fill="#1e293b" stroke="#334155" />
-    <circle cx="18" cy="18" r="6" fill="#10b981" />
-    <text x="32" y="24" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="14" font-weight="600">SRI LANKA HUB</text>
+    <rect x="0" y="0" width="180" height="38" rx="19" fill="#0d1b38" stroke="#f59e0b" stroke-opacity="0.4" />
+    <circle cx="20" cy="19" r="6" fill="#10b981" />
+    <text x="36" y="24" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="13" font-weight="700">SRI LANKA HUB</text>
 
-    <rect x="185" y="0" width="155" height="36" rx="18" fill="#1e293b" stroke="#334155" />
-    <circle cx="203" cy="18" r="6" fill="#0284c7" />
-    <text x="217" y="24" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="14" font-weight="600">DUBAI / UAE</text>
+    <rect x="195" y="0" width="170" height="38" rx="19" fill="#0d1b38" stroke="#f59e0b" stroke-opacity="0.4" />
+    <circle cx="215" cy="19" r="6" fill="#f59e0b" />
+    <text x="231" y="24" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="13" font-weight="700">DUBAI / UAE</text>
   </g>
 
   <!-- Main Headline -->
-  <text x="100" y="310" fill="#ffffff" font-family="system-ui, sans-serif" font-size="56" font-weight="800" letter-spacing="-1.5">
+  <text x="100" y="315" fill="#ffffff" font-family="system-ui, sans-serif" font-size="56" font-weight="900" letter-spacing="-1.5">
     Building Digital Experiences
   </text>
-  <text x="100" y="380" fill="url(#primaryGrad)" font-family="system-ui, sans-serif" font-size="56" font-weight="800" letter-spacing="-1.5">
+  <text x="100" y="385" fill="url(#goldGrad)" font-family="system-ui, sans-serif" font-size="56" font-weight="900" letter-spacing="-1.5">
     That Grow Your Business.
   </text>
 
   <!-- Subtitle -->
-  <text x="100" y="450" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="24" font-weight="400" width="800">
+  <text x="100" y="455" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="24" font-weight="400">
     Premier Website Development • ATS CV Design • Mobile Applications
   </text>
 
   <!-- WhatsApp Indicator Tag -->
   <g transform="translate(100, 520)">
-    <rect x="0" y="0" width="340" height="48" rx="24" fill="#059669" />
-    <text x="28" y="30" fill="#ffffff" font-family="system-ui, sans-serif" font-size="18" font-weight="700">Direct WhatsApp Inquiry Ready</text>
+    <rect x="0" y="0" width="360" height="50" rx="25" fill="#059669" />
+    <text x="32" y="32" fill="#ffffff" font-family="system-ui, sans-serif" font-size="18" font-weight="700">Direct WhatsApp Inquiry Ready</text>
   </g>
 </svg>
-

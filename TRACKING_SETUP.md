@@ -73,3 +73,4 @@ Fired when a user taps a direct phone call link (`tel:+94778091278` or `tel:+971
 4. In GA4, go to **Admin** → **DebugView**.
 5. You will see the `whatsapp_click` event appear in real-time with full metadata: `service`, `location`, `placement`, and `url`.
 6. To mark this as a key conversion, go to **Admin** → **Events**, locate `whatsapp_click`, and toggle **Mark as key event**.
+

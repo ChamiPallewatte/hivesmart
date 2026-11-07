@@ -29,12 +29,12 @@ const suggestedPills = [
 <div class={`w-full max-w-3xl mx-auto relative ${className}`} id="search-component">
   <form id="search-form" action="/services/" method="GET" class="relative group">
     <div
-      class={`flex items-center w-full rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700/80 hover:border-sky-500 focus-within:border-sky-500 focus-within:ring-4 focus-within:ring-sky-500/15 shadow-xl shadow-slate-900/5 transition-all duration-300 ${
+      class={`flex items-center w-full rounded-2xl bg-white dark:bg-[#0a1935] border-2 border-amber-500/30 dark:border-amber-500/40 hover:border-amber-500 focus-within:border-amber-500 focus-within:ring-4 focus-within:ring-amber-500/15 shadow-xl shadow-amber-900/5 transition-all duration-300 ${
         large ? 'p-2 pl-4 md:pl-5' : 'p-1.5 pl-3'
       }`}
     >
       <!-- Search Glass Icon -->
-      <div class="text-slate-400 group-focus-within:text-sky-500 transition-colors mr-3 flex-shrink-0">
+      <div class="text-amber-500 transition-colors mr-3 flex-shrink-0">
         <svg class={`${large ? 'w-6 h-6' : 'w-5 h-5'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
@@ -49,10 +49,10 @@ const suggestedPills = [
         placeholder={placeholder}
         autocomplete="off"
         spellcheck="false"
-        class={`w-full bg-transparent text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none ${
+        class={`w-full bg-transparent text-[#081736] dark:text-white placeholder-slate-400 focus:outline-none ${
           large ? 'text-base md:text-lg font-medium' : 'text-sm font-normal'
         }`}
-        aria-label="Search HiveSmart services and capabilities"
+        aria-label="Search Hive smart services and capabilities"
         aria-autocomplete="list"
         aria-controls="search-suggestions-box"
       />
@@ -61,7 +61,7 @@ const suggestedPills = [
       <button
         type="button"
         id="search-clear-btn"
-        class="hidden text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 mr-1"
+        class="hidden text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 p-1 mr-1"
         aria-label="Clear search input"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,13 +73,13 @@ const suggestedPills = [
       <button
         type="submit"
         id="search-submit-btn"
-        class={`flex-shrink-0 inline-flex items-center justify-center font-bold text-white bg-sky-600 hover:bg-sky-500 active:scale-95 rounded-xl shadow-md transition-all duration-200 ${
+        class={`flex-shrink-0 inline-flex items-center justify-center font-bold text-white bg-[#081736] hover:bg-[#0f2752] border border-amber-500/40 active:scale-95 rounded-xl shadow-md transition-all duration-200 ${
           large ? 'px-6 py-3.5 text-sm md:text-base' : 'px-4 py-2 text-sm'
         }`}
         aria-label="Execute search"
       >
         <span>Search</span>
-        <svg class="w-4 h-4 ml-1.5 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4 ml-1.5 hidden md:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
         </svg>
       </button>
@@ -88,10 +88,10 @@ const suggestedPills = [
     <!-- Live Auto-Suggest Dropdown Box -->
     <div
       id="search-suggestions-box"
-      class="hidden absolute left-0 right-0 top-full mt-2 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-2 max-h-80 overflow-y-auto"
+      class="hidden absolute left-0 right-0 top-full mt-2 z-40 bg-white/95 dark:bg-[#0a1935]/98 backdrop-blur-xl rounded-2xl border border-amber-500/30 dark:border-amber-500/40 shadow-2xl p-2 max-h-80 overflow-y-auto"
       role="listbox"
     >
-      <div class="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+      <div class="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
         Suggested Services
       </div>
       <ul id="suggestions-list" class="space-y-1"></ul>
@@ -105,7 +105,7 @@ const suggestedPills = [
       {suggestedPills.map((pill) => (
         <a
           href={`/services/?q=${encodeURIComponent(pill)}`}
-          class="text-xs px-3 py-1 rounded-full bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 hover:border-sky-500 hover:bg-sky-50 dark:hover:bg-sky-950/40 text-slate-700 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
+          class="text-xs px-3 py-1 rounded-full bg-white dark:bg-[#081736] border border-amber-500/30 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40 text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
           data-pill-search
         >
           {pill}
@@ -173,15 +173,15 @@ const suggestedPills = [
         <li>
           <a
             href="/services/?q=${encodeURIComponent(m.query)}"
-            class="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-sky-50 dark:hover:bg-slate-800 transition-colors group"
+            class="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-amber-50 dark:hover:bg-slate-800 transition-colors group"
           >
             <div class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
-              <span class="text-sm font-medium text-slate-800 dark:text-slate-200 group-hover:text-sky-600 transition-colors">${m.label}</span>
+              <span class="text-sm font-medium text-slate-800 dark:text-slate-200 group-hover:text-amber-600 transition-colors">${m.label}</span>
             </div>
-            <span class="text-[11px] font-semibold text-slate-400 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800">${m.cat}</span>
+            <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-950/60">${m.cat}</span>
           </a>
         </li>
       `
@@ -226,4 +226,3 @@ const suggestedPills = [
     initSearchBar();
   }
 </script>
-

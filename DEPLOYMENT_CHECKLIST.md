@@ -69,3 +69,4 @@ Click **Save and Deploy** (or trigger a new commit on `main`). Cloudflare will b
    - Tap WhatsApp buttons and verify `wa.me/94778091278` and `wa.me/971547713570` open with proper prefilled text.
    - Test `/robots.txt` and `/sitemap-index.xml`.
    - Access `/admin/` and test authentication with your password.
+

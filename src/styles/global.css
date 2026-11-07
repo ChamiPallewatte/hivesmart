@@ -2,15 +2,31 @@
 
 @layer base {
   :root {
-    --primary: #0284c7;
-    --primary-hover: #0369a1;
-    --primary-dark: #075985;
-    --accent: #10b981;
-    --accent-hover: #059669;
-    --surface-dark: #0a0f1d;
-    --surface-card: #111827;
-    --surface-border: #1f2937;
-    --text-main: #0f172a;
+    /* Official HiveSmart Brand Colors: Honey Gold & Deep Navy */
+    --brand-navy: #081736;
+    --brand-navy-light: #0f2752;
+    --brand-navy-dark: #050e22;
+    --brand-gold: #f59e0b;
+    --brand-gold-light: #fbbf24;
+    --brand-gold-dark: #d97706;
+    --brand-amber: #ea580c;
+    
+    /* WhatsApp Conversion Accent */
+    --accent-wa: #25d366;
+    --accent-wa-hover: #128c7e;
+
+    /* Semantic Mappings */
+    --primary: #081736;
+    --primary-hover: #0f2752;
+    --secondary: #f59e0b;
+    --secondary-hover: #d97706;
+
+    --surface-light: #f8fafc;
+    --surface-dark: #061024;
+    --surface-card-dark: #0a1935;
+    --surface-border-dark: #15284f;
+    
+    --text-main: #081736;
     --text-muted: #64748b;
   }
 
@@ -22,7 +38,7 @@
 
   body {
     background-color: #f8fafc;
-    color: #0f172a;
+    color: #081736;
     overflow-x: hidden;
   }
 
@@ -39,37 +55,44 @@
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+    background: #f59e0b;
   }
 }
 
-/* Glassmorphism & Modern Card Utility Classes */
+/* Glassmorphism & Honeycomb Card Utility Classes */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.90);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .glass-panel-dark {
-  background: rgba(15, 23, 42, 0.88);
+  background: rgba(8, 23, 54, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(51, 65, 85, 0.5);
+  border: 1px solid rgba(245, 158, 11, 0.2);
 }
 
-.glow-gradient {
-  background: radial-gradient(circle at 50% 0%, rgba(2, 132, 199, 0.15) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%);
+/* Hive Gold & Navy Ambient Gradients */
+.glow-gradient-gold {
+  background: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.18) 0%, rgba(8, 23, 54, 0.05) 55%, transparent 80%);
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #059669 100%);
+  background: linear-gradient(135deg, #d97706 0%, #f59e0b 40%, #081736 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-gold {
-  background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #b45309 100%);
+  background: linear-gradient(135deg, #b45309 0%, #f59e0b 50%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-navy {
+  background: linear-gradient(135deg, #081736 0%, #1e3a8a 60%, #0369a1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -90,3 +113,8 @@
   animation: pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* Honeycomb border highlight */
+.border-gold-glow {
+  border-color: rgba(245, 158, 11, 0.6);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
+}
