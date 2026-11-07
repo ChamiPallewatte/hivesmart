@@ -2,6 +2,7 @@
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import BlogCard from '../../components/BlogCard.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import { SITE_CONFIG } from '../../config/site';
 import { getAllPosts, getPostBySlug, getRelatedPosts, type StaticBlogPost } from '../../lib/database/initial-posts';
 
 export async function getStaticPaths() {
@@ -20,7 +21,7 @@ const { post } = Astro.props;
 const related = getRelatedPosts(post.slug, 2);
 
 // Direct Social Sharing URLs
-const pageUrl = `https://hivesmart.io/blog/${post.slug}/`;
+const pageUrl = `${SITE_CONFIG.url}/blog/${post.slug}/`;
 const waShareUrl = `https://wa.me/?text=${encodeURIComponent(`Check out this guide from HiveSmart: ${post.title} ${pageUrl}`)}`;
 const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(pageUrl)}`;
 const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;

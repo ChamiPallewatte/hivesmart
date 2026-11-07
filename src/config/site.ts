@@ -23,7 +23,7 @@ export const SITE_CONFIG = {
     'We help businesses build a powerful online presence through professional website development, creative design and modern mobile applications.',
   description:
     'HiveSmart is a premier digital agency providing high-performance website development, ATS-friendly CV design, and custom mobile applications for businesses in Sri Lanka, Dubai, and worldwide.',
-  url: 'https://hivesmart.io',
+  url: 'https://hivesmartpro.com',
   defaultLocale: 'en',
   
   // Direct WhatsApp & Phone contact hubs

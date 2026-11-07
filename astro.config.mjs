@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://hivesmart.io',
+  site: 'https://hivesmartpro.com',
   adapter: cloudflare({
     imageService: 'passthrough'
   }),
