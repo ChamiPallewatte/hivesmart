@@ -1,4 +1,5 @@
 name = "hivesmart"
+account_id = "fe558cfb6d580d120c73cc4b7e4e7e77"
 compatibility_date = "2026-03-01"
 compatibility_flags = ["nodejs_compat"]
 
@@ -6,4 +7,3 @@ compatibility_flags = ["nodejs_compat"]
 binding = "DB"
 database_name = "hivesmart-db"
 database_id = "f4bbcd2a-d3f8-44e0-bea2-d63271f92469"
-migrations_dir = "migrations"
