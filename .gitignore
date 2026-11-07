@@ -1,0 +1,24 @@
+# Build and dependencies
+node_modules/
+dist/
+.astro/
+.wrangler/
+
+# Environment files and secrets
+.env
+.env.*
+.env.local
+.env.production
+!.env.example
+
+# Logs and coverage
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+coverage/
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+

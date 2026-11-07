@@ -1,0 +1,229 @@
+---
+interface Props {
+  initialValue?: string;
+  placeholder?: string;
+  large?: boolean;
+  class?: string;
+}
+
+const {
+  initialValue = '',
+  placeholder = 'What digital solution are you looking for?',
+  large = true,
+  class: className = ''
+} = Astro.props;
+
+// Quick suggested keywords for 1-click chip search
+const suggestedPills = [
+  'Website Development',
+  'WordPress Development',
+  'Ecommerce Website',
+  'Business Website',
+  'CV Design',
+  'ATS Resume',
+  'Mobile Application',
+  'iOS & Android App'
+];
+---
+
+<div class={`w-full max-w-3xl mx-auto relative ${className}`} id="search-component">
+  <form id="search-form" action="/services/" method="GET" class="relative group">
+    <div
+      class={`flex items-center w-full rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700/80 hover:border-sky-500 focus-within:border-sky-500 focus-within:ring-4 focus-within:ring-sky-500/15 shadow-xl shadow-slate-900/5 transition-all duration-300 ${
+        large ? 'p-2 pl-4 md:pl-5' : 'p-1.5 pl-3'
+      }`}
+    >
+      <!-- Search Glass Icon -->
+      <div class="text-slate-400 group-focus-within:text-sky-500 transition-colors mr-3 flex-shrink-0">
+        <svg class={`${large ? 'w-6 h-6' : 'w-5 h-5'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+
+      <!-- Main Input Field -->
+      <input
+        type="search"
+        name="q"
+        id="search-input"
+        value={initialValue}
+        placeholder={placeholder}
+        autocomplete="off"
+        spellcheck="false"
+        class={`w-full bg-transparent text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none ${
+          large ? 'text-base md:text-lg font-medium' : 'text-sm font-normal'
+        }`}
+        aria-label="Search HiveSmart services and capabilities"
+        aria-autocomplete="list"
+        aria-controls="search-suggestions-box"
+      />
+
+      <!-- Clear Button (hidden by default) -->
+      <button
+        type="button"
+        id="search-clear-btn"
+        class="hidden text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 mr-1"
+        aria-label="Clear search input"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Submit Action Button -->
+      <button
+        type="submit"
+        id="search-submit-btn"
+        class={`flex-shrink-0 inline-flex items-center justify-center font-bold text-white bg-sky-600 hover:bg-sky-500 active:scale-95 rounded-xl shadow-md transition-all duration-200 ${
+          large ? 'px-6 py-3.5 text-sm md:text-base' : 'px-4 py-2 text-sm'
+        }`}
+        aria-label="Execute search"
+      >
+        <span>Search</span>
+        <svg class="w-4 h-4 ml-1.5 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Live Auto-Suggest Dropdown Box -->
+    <div
+      id="search-suggestions-box"
+      class="hidden absolute left-0 right-0 top-full mt-2 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-2 max-h-80 overflow-y-auto"
+      role="listbox"
+    >
+      <div class="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+        Suggested Services
+      </div>
+      <ul id="suggestions-list" class="space-y-1"></ul>
+    </div>
+  </form>
+
+  <!-- Quick Selection Pills -->
+  {large && (
+    <div class="mt-4 flex flex-wrap items-center justify-center gap-2 select-none">
+      <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">Popular:</span>
+      {suggestedPills.map((pill) => (
+        <a
+          href={`/services/?q=${encodeURIComponent(pill)}`}
+          class="text-xs px-3 py-1 rounded-full bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 hover:border-sky-500 hover:bg-sky-50 dark:hover:bg-sky-950/40 text-slate-700 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
+          data-pill-search
+        >
+          {pill}
+        </a>
+      ))}
+    </div>
+  )}
+</div>
+
+<script>
+  import { trackEvent } from '../lib/analytics/events';
+
+  const searchableKeywords = [
+    { label: 'Website Development', slug: 'website-development', query: 'website-development', cat: 'Primary Service' },
+    { label: 'WordPress Website Development', slug: 'website-development', query: 'wordpress development', cat: 'Website Development' },
+    { label: 'Ecommerce Website Development', slug: 'website-development', query: 'ecommerce website', cat: 'Website Development' },
+    { label: 'Business Website Development', slug: 'website-development', query: 'business website', cat: 'Website Development' },
+    { label: 'Website Speed Optimization', slug: 'website-development', query: 'speed optimization', cat: 'Website Development' },
+    { label: 'Landing Page Development', slug: 'website-development', query: 'landing page', cat: 'Website Development' },
+    { label: 'Professional CV Design', slug: 'cv-design', query: 'cv design', cat: 'CV Design' },
+    { label: 'ATS-Friendly CV Formatting', slug: 'cv-design', query: 'ats friendly cv', cat: 'CV Design' },
+    { label: 'Executive Resume Design', slug: 'cv-design', query: 'resume design', cat: 'CV Design' },
+    { label: 'Mobile Application Development', slug: 'mobile-app-development', query: 'mobile application', cat: 'Mobile Apps' },
+    { label: 'Android App Development', slug: 'mobile-app-development', query: 'android app', cat: 'Mobile Apps' },
+    { label: 'iOS / iPhone App Development', slug: 'mobile-app-development', query: 'ios app', cat: 'Mobile Apps' },
+    { label: 'Cross-Platform App (Flutter)', slug: 'mobile-app-development', query: 'cross-platform', cat: 'Mobile Apps' }
+  ];
+
+  function initSearchBar() {
+    const input = document.getElementById('search-input') as HTMLInputElement | null;
+    const form = document.getElementById('search-form') as HTMLFormElement | null;
+    const suggestionsBox = document.getElementById('search-suggestions-box');
+    const list = document.getElementById('suggestions-list');
+    const clearBtn = document.getElementById('search-clear-btn');
+
+    if (!input || !form || !suggestionsBox || !list) return;
+
+    function renderSuggestions(val: string) {
+      const q = val.toLowerCase().trim();
+      if (!q) {
+        suggestionsBox?.classList.add('hidden');
+        clearBtn?.classList.add('hidden');
+        return;
+      }
+
+      clearBtn?.classList.remove('hidden');
+
+      const matches = searchableKeywords.filter(
+        (item) => item.label.toLowerCase().includes(q) || item.cat.toLowerCase().includes(q) || item.query.toLowerCase().includes(q)
+      );
+
+      if (matches.length === 0) {
+        list!.innerHTML = `
+          <li class="px-3 py-3 text-xs text-slate-500 dark:text-slate-400 text-center">
+            Press Enter to search all services for <span class="font-bold text-slate-700 dark:text-slate-200">"${val}"</span>
+          </li>
+        `;
+        suggestionsBox?.classList.remove('hidden');
+        return;
+      }
+
+      list!.innerHTML = matches
+        .map(
+          (m) => `
+        <li>
+          <a
+            href="/services/?q=${encodeURIComponent(m.query)}"
+            class="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-sky-50 dark:hover:bg-slate-800 transition-colors group"
+          >
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+              <span class="text-sm font-medium text-slate-800 dark:text-slate-200 group-hover:text-sky-600 transition-colors">${m.label}</span>
+            </div>
+            <span class="text-[11px] font-semibold text-slate-400 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800">${m.cat}</span>
+          </a>
+        </li>
+      `
+        )
+        .join('');
+
+      suggestionsBox?.classList.remove('hidden');
+    }
+
+    input.addEventListener('input', (e) => {
+      renderSuggestions((e.target as HTMLInputElement).value);
+    });
+
+    clearBtn?.addEventListener('click', () => {
+      input.value = '';
+      suggestionsBox?.classList.add('hidden');
+      clearBtn?.classList.add('hidden');
+      input.focus();
+    });
+
+    form.addEventListener('submit', (e) => {
+      const q = input.value.trim();
+      if (!q) {
+        e.preventDefault();
+        input.focus();
+        return;
+      }
+
+      trackEvent('internal_search', { query: q });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!form.contains(e.target as Node)) {
+        suggestionsBox?.classList.add('hidden');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSearchBar);
+  } else {
+    initSearchBar();
+  }
+</script>
+

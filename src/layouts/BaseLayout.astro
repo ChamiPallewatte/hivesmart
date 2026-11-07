@@ -1,0 +1,75 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SEO from '../components/SEO.astro';
+import WhatsAppFloating from '../components/WhatsAppFloating.astro';
+import Analytics from '../components/Analytics.astro';
+import { getOrganizationSchema, getWebSiteSchema, getLocalBusinessSchema } from '../lib/seo/schema';
+import type { SEOProps } from '../lib/seo/meta';
+import '../styles/global.css';
+
+interface Props extends SEOProps {
+  structuredData?: Record<string, any> | Array<Record<string, any>>;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage,
+  ogType,
+  keywords,
+  noindex,
+  publishedTime,
+  modifiedTime,
+  author,
+  structuredData
+} = Astro.props;
+
+// Combine standard organization schemas with page-specific schemas
+const baseSchemas = [
+  getOrganizationSchema(),
+  getWebSiteSchema(),
+  ...getLocalBusinessSchema()
+];
+
+const allSchemas = structuredData
+  ? [...baseSchemas, ...(Array.isArray(structuredData) ? structuredData : [structuredData])]
+  : baseSchemas;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <SEO
+      title={title}
+      description={description}
+      canonical={canonical}
+      ogImage={ogImage}
+      ogType={ogType}
+      keywords={keywords}
+      noindex={noindex}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      author={author}
+      structuredData={allSchemas}
+    />
+    <Analytics />
+  </head>
+  <body class="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-sky-500 selection:text-white antialiased">
+    <!-- Top Sticky Header -->
+    <Header />
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+
+    <!-- Bottom Footer -->
+    <Footer />
+
+    <!-- Persistent Floating WhatsApp Hub -->
+    <WhatsAppFloating />
+  </body>
+</html>
+

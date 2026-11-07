@@ -1,0 +1,45 @@
+---
+import { getBreadcrumbSchema } from '../lib/seo/schema';
+
+interface Crumb {
+  name: string;
+  url: string;
+}
+
+interface Props {
+  items: Crumb[];
+}
+
+const { items } = Astro.props;
+const breadcrumbSchema = getBreadcrumbSchema(items);
+---
+
+<nav aria-label="Breadcrumb" class="py-4 select-none">
+  <ol class="flex items-center flex-wrap gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+    {items.map((item, index) => {
+      const isLast = index === items.length - 1;
+      return (
+        <li class="flex items-center gap-2">
+          {index > 0 && (
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          )}
+          {isLast ? (
+            <span class="text-slate-900 dark:text-white font-semibold" aria-current="page">
+              {item.name}
+            </span>
+          ) : (
+            <a href={item.url} class="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+              {item.name}
+            </a>
+          )}
+        </li>
+      );
+    })}
+  </ol>
+</nav>
+
+<!-- Breadcrumb Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+

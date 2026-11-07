@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="50%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)" />
+  
+  <!-- Decorative Grid & Tech Rings -->
+  <g opacity="0.12" stroke="#38bdf8" stroke-width="1">
+    <circle cx="1050" cy="150" r="300" fill="none" />
+    <circle cx="1050" cy="150" r="200" fill="none" />
+    <circle cx="1050" cy="150" r="100" fill="none" />
+  </g>
+
+  <!-- Brand Logo & Badge -->
+  <g transform="translate(100, 100)">
+    <polygon points="30,4 54,18 54,46 30,60 6,46 6,18" fill="#1e293b" stroke="url(#primaryGrad)" stroke-width="3" />
+    <path d="M25 26 L20 32 L25 38" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M35 26 L40 32 L35 38" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" />
+    <text x="75" y="42" fill="#ffffff" font-family="system-ui, sans-serif" font-size="34" font-weight="800" letter-spacing="-0.5">HiveSmart</text>
+    <text x="245" y="42" fill="#10b981" font-family="system-ui, sans-serif" font-size="34" font-weight="400">.</text>
+  </g>
+
+  <!-- Location Badges -->
+  <g transform="translate(100, 195)">
+    <rect x="0" y="0" width="170" height="36" rx="18" fill="#1e293b" stroke="#334155" />
+    <circle cx="18" cy="18" r="6" fill="#10b981" />
+    <text x="32" y="24" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="14" font-weight="600">SRI LANKA HUB</text>
+
+    <rect x="185" y="0" width="155" height="36" rx="18" fill="#1e293b" stroke="#334155" />
+    <circle cx="203" cy="18" r="6" fill="#0284c7" />
+    <text x="217" y="24" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="14" font-weight="600">DUBAI / UAE</text>
+  </g>
+
+  <!-- Main Headline -->
+  <text x="100" y="310" fill="#ffffff" font-family="system-ui, sans-serif" font-size="56" font-weight="800" letter-spacing="-1.5">
+    Building Digital Experiences
+  </text>
+  <text x="100" y="380" fill="url(#primaryGrad)" font-family="system-ui, sans-serif" font-size="56" font-weight="800" letter-spacing="-1.5">
+    That Grow Your Business.
+  </text>
+
+  <!-- Subtitle -->
+  <text x="100" y="450" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="24" font-weight="400" width="800">
+    Premier Website Development • ATS CV Design • Mobile Applications
+  </text>
+
+  <!-- WhatsApp Indicator Tag -->
+  <g transform="translate(100, 520)">
+    <rect x="0" y="0" width="340" height="48" rx="24" fill="#059669" />
+    <text x="28" y="30" fill="#ffffff" font-family="system-ui, sans-serif" font-size="18" font-weight="700">Direct WhatsApp Inquiry Ready</text>
+  </g>
+</svg>
+

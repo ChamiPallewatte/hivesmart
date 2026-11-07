@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350" fill="none">
+  <defs>
+    <linearGradient id="b1Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+  </defs>
+  <rect width="600" height="350" fill="#0f172a" rx="12" />
+  <g opacity="0.1" stroke="#38bdf8" stroke-width="1">
+    <path d="M0 50 H600 M0 100 H600 M0 150 H600 M0 200 H600 M0 250 H600 M0 300 H600" />
+    <path d="M100 0 V350 M200 0 V350 M300 0 V350 M400 0 V350 M500 0 V350" />
+  </g>
+  <rect x="60" y="50" width="480" height="250" rx="10" fill="#1e293b" stroke="#334155" stroke-width="2" />
+  <circle cx="85" cy="72" r="6" fill="#ef4444" />
+  <circle cx="103" cy="72" r="6" fill="#f59e0b" />
+  <circle cx="121" cy="72" r="6" fill="#10b981" />
+  <rect x="85" y="105" width="220" height="20" rx="4" fill="url(#b1Grad)" />
+  <rect x="85" y="140" width="310" height="12" rx="3" fill="#475569" />
+  <rect x="85" y="160" width="260" height="12" rx="3" fill="#475569" />
+  <rect x="85" y="180" width="280" height="12" rx="3" fill="#475569" />
+  <rect x="85" y="215" width="130" height="36" rx="6" fill="#10b981" />
+  <text x="105" y="238" fill="#ffffff" font-family="system-ui" font-size="14" font-weight="700">Custom Code</text>
+  <circle cx="430" cy="180" r="60" fill="#0284c7" opacity="0.15" />
+  <polygon points="430,135 470,160 470,205 430,225 390,205 390,160" fill="none" stroke="url(#b1Grad)" stroke-width="3" />
+</svg>
+

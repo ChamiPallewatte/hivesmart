@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350" fill="none">
+  <defs>
+    <linearGradient id="atsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+  </defs>
+  <rect width="600" height="350" fill="#0f172a" rx="12" />
+  
+  <!-- Left: Failed Graphic CV -->
+  <g transform="translate(60, 50)">
+    <rect width="200" height="250" rx="8" fill="#1e293b" stroke="#ef4444" stroke-width="2" />
+    <rect x="20" y="20" width="70" height="10" rx="2" fill="#ef4444" />
+    <rect x="20" y="40" width="160" height="6" rx="2" fill="#475569" />
+    <rect x="20" y="55" width="140" height="6" rx="2" fill="#475569" />
+    <circle cx="100" cy="130" r="30" fill="#ef4444" opacity="0.2" />
+    <path d="M85 115 L115 145 M115 115 L85 145" stroke="#ef4444" stroke-width="4" stroke-linecap="round" />
+    <text x="100" y="220" text-anchor="middle" fill="#ef4444" font-family="system-ui" font-size="13" font-weight="700">Canva / Graphics Bug</text>
+    <text x="100" y="238" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="11">ATS Auto-Reject</text>
+  </g>
+
+  <!-- Right: ATS-Optimized Clean CV -->
+  <g transform="translate(340, 50)">
+    <rect width="200" height="250" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="2" />
+    <rect x="20" y="20" width="80" height="10" rx="2" fill="#10b981" />
+    <rect x="20" y="40" width="160" height="6" rx="2" fill="#cbd5e1" />
+    <rect x="20" y="55" width="150" height="6" rx="2" fill="#cbd5e1" />
+    <circle cx="100" cy="130" r="30" fill="#10b981" opacity="0.2" />
+    <path d="M88 130 L98 140 L115 120" stroke="#10b981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+    <text x="100" y="220" text-anchor="middle" fill="#10b981" font-family="system-ui" font-size="13" font-weight="700">ATS 100% Parsable</text>
+    <text x="100" y="238" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="11">Interviews Guaranteed</text>
+  </g>
+</svg>
+

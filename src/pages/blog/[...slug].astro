@@ -1,0 +1,113 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import { getAllPosts, getPostBySlug, getRelatedPosts, type StaticBlogPost } from '../../lib/database/initial-posts';
+
+export async function getStaticPaths() {
+  const posts = getAllPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+interface Props {
+  post: StaticBlogPost;
+}
+
+const { post } = Astro.props;
+const related = getRelatedPosts(post.slug, 2);
+
+// Direct Social Sharing URLs
+const pageUrl = `https://hivesmart.io/blog/${post.slug}/`;
+const waShareUrl = `https://wa.me/?text=${encodeURIComponent(`Check out this guide from HiveSmart: ${post.title} ${pageUrl}`)}`;
+const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(pageUrl)}`;
+const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;
+
+// Simple parser for markdown headings & bullet lists in sample posts
+function renderContent(raw: string) {
+  return raw
+    .trim()
+    .split('\n\n')
+    .map((block) => {
+      const trimmed = block.trim();
+      if (trimmed.startsWith('### ')) {
+        return `<h3 class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3">${trimmed.replace('### ', '')}</h3>`;
+      }
+      if (trimmed.startsWith('## ')) {
+        return `<h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-10 mb-4">${trimmed.replace('## ', '')}</h2>`;
+      }
+      if (trimmed.startsWith('#### ')) {
+        return `<h4 class="text-lg font-bold text-slate-900 dark:text-white mt-6 mb-2">${trimmed.replace('#### ', '')}</h4>`;
+      }
+      if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+        const items = trimmed
+          .split('\n')
+          .map((li) => `<li class="ml-4 list-disc text-sm sm:text-base leading-relaxed mb-1.5">${li.replace(/^[-*]\s+/, '')}</li>`)
+          .join('');
+        return `<ul class="my-4 space-y-1">${items}</ul>`;
+      }
+      if (/^\d+\.\s/.test(trimmed)) {
+        const items = trimmed
+          .split('\n')
+          .map((li) => `<li class="ml-4 list-decimal text-sm sm:text-base leading-relaxed mb-2">${li.replace(/^\d+\.\s+/, '')}</li>`)
+          .join('');
+        return `<ol class="my-4 space-y-2">${items}</ol>`;
+      }
+      return `<p class="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed mb-4">${trimmed}</p>`;
+    })
+    .join('');
+}
+
+const renderedHtml = renderContent(post.content);
+---
+
+<BlogLayout post={post}>
+  <!-- Main Rendered Article HTML -->
+  <div class="article-content space-y-4" set:html={renderedHtml} />
+
+  <!-- Social Share Row -->
+  <div class="my-10 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
+    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Share This Guide:</span>
+    <div class="flex items-center gap-2">
+      <a
+        href={waShareUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-xs font-semibold hover:bg-emerald-100 transition-colors"
+      >
+        <span>WhatsApp</span>
+      </a>
+      <a
+        href={twitterShareUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold hover:bg-slate-200 transition-colors"
+      >
+        <span>Twitter / X</span>
+      </a>
+      <a
+        href={linkedinShareUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-50 dark:bg-sky-950 text-sky-700 dark:text-sky-300 text-xs font-semibold hover:bg-sky-100 transition-colors"
+      >
+        <span>LinkedIn</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Related Insights Section -->
+  {related.length > 0 && (
+    <div class="mt-16 pt-10 border-t border-slate-200 dark:border-slate-800">
+      <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Related Articles</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {related.map((rel) => (
+          <BlogCard post={rel} />
+        ))}
+      </div>
+    </div>
+  )}
+</BlogLayout>
+

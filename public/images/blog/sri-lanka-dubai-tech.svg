@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350" fill="none">
+  <defs>
+    <linearGradient id="tradeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="50%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+  </defs>
+  <rect width="600" height="350" fill="#090d16" rx="12" />
+  
+  <!-- Left Node: Sri Lanka Hub -->
+  <g transform="translate(60, 90)">
+    <rect width="180" height="170" rx="12" fill="#1e293b" stroke="#334155" stroke-width="2" />
+    <circle cx="90" cy="50" r="28" fill="#10b981" opacity="0.2" />
+    <circle cx="90" cy="50" r="14" fill="#10b981" />
+    <text x="90" y="105" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="16" font-weight="700">Sri Lanka Hub</text>
+    <text x="90" y="130" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="12">Colombo / Kegalle</text>
+  </g>
+
+  <!-- Connecting Bridge / Laser -->
+  <path d="M240 175 C 300 120, 320 120, 360 175" stroke="url(#tradeGrad)" stroke-width="4" stroke-dasharray="8 6" fill="none" />
+  <circle cx="300" cy="142" r="8" fill="#38bdf8" />
+
+  <!-- Right Node: Dubai UAE Hub -->
+  <g transform="translate(360, 90)">
+    <rect width="180" height="170" rx="12" fill="#1e293b" stroke="#334155" stroke-width="2" />
+    <circle cx="90" cy="50" r="28" fill="#f59e0b" opacity="0.2" />
+    <circle cx="90" cy="50" r="14" fill="#f59e0b" />
+    <text x="90" y="105" text-anchor="middle" fill="#ffffff" font-family="system-ui" font-size="16" font-weight="700">Dubai / UAE Hub</text>
+    <text x="90" y="130" text-anchor="middle" fill="#94a3b8" font-family="system-ui" font-size="12">Al Rigga, Dubai</text>
+  </g>
+
+  <text x="300" y="300" text-anchor="middle" fill="#64748b" font-family="system-ui" font-size="13">Edge Optimized Multi-Regional Cloudflare Deployment</text>
+</svg>
+

@@ -1,0 +1,80 @@
+---
+const gaId = import.meta.env.PUBLIC_GA4_ID || '';
+const cfToken = import.meta.env.PUBLIC_CF_ANALYTICS_TOKEN || '';
+---
+
+<!-- Cloudflare Web Analytics (Privacy-Friendly, Free Tier) -->
+{cfToken && (
+  <script
+    defer
+    src="https://static.cloudflareinsights.com/beacon.min.js"
+    data-cf-beacon={`{"token": "${cfToken}"}`}
+  ></script>
+)}
+
+<!-- Google Analytics 4 (Only loaded if configured) -->
+{gaId && (
+  <>
+    <script
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+    ></script>
+    <script is:inline define:vars={{ gaId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', gaId, {
+        anonymize_ip: true,
+        cookie_flags: 'SameSite=None;Secure'
+      });
+    </script>
+  </>
+)}
+
+<!-- Client-side Event Listeners for WhatsApp, Calls, and Navigation Tracking -->
+<script>
+  import { trackWhatsAppClick, trackEvent } from '../lib/analytics/events';
+
+  function attachConversionListeners() {
+    // 1. WhatsApp Clicks
+    document.querySelectorAll('[data-wa-track="true"]').forEach((element) => {
+      // Avoid duplicate listener
+      if (element.getAttribute('data-listener-attached')) return;
+      element.setAttribute('data-listener-attached', 'true');
+
+      element.addEventListener('click', () => {
+        const service = element.getAttribute('data-wa-service') || 'General';
+        const location = element.getAttribute('data-wa-location') || 'Sri Lanka';
+        const placement = element.getAttribute('data-wa-placement') || 'unknown';
+
+        trackWhatsAppClick({
+          service,
+          location,
+          placement
+        });
+      });
+    });
+
+    // 2. Direct Phone Call Clicks
+    document.querySelectorAll('a[href^="tel:"]').forEach((telLink) => {
+      if (telLink.getAttribute('data-tel-attached')) return;
+      telLink.setAttribute('data-tel-attached', 'true');
+
+      telLink.addEventListener('click', () => {
+        trackEvent('phone_click', {
+          tel: telLink.getAttribute('href'),
+          text: telLink.textContent?.trim()
+        });
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachConversionListeners);
+  } else {
+    attachConversionListeners();
+  }
+</script>
+

@@ -1,0 +1,67 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model BlogPost {
+  id             String          @id @default(cuid())
+  slug           String          @unique
+  title          String
+  description    String
+  content        String
+  featuredImage  String?
+  author         String          @default("HiveSmart Team")
+  readingTime    Int             @default(5)
+  published      Boolean         @default(true)
+  publishedAt    DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  seoTitle       String?
+  seoDescription String?
+  categoryId     String?
+  category       BlogCategory?   @relation(fields: [categoryId], references: [id])
+  tags           BlogTagOnPost[]
+
+  @@index([slug])
+  @@index([published])
+}
+
+model BlogCategory {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  slug        String     @unique
+  description String?
+  posts       BlogPost[]
+}
+
+model BlogTag {
+  id    String          @id @default(cuid())
+  name  String          @unique
+  slug  String          @unique
+  posts BlogTagOnPost[]
+}
+
+model BlogTagOnPost {
+  post   BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String
+  tag    BlogTag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId  String
+
+  @@id([postId, tagId])
+}
+
+model SiteSetting {
+  key         String   @id
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}

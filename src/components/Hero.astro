@@ -1,0 +1,70 @@
+---
+import { SITE_CONFIG } from '../config/site';
+import SearchBar from './SearchBar.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
+---
+
+<section class="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 bg-radial from-sky-500/10 via-slate-50 to-white dark:from-slate-900 dark:via-slate-950 dark:to-slate-950">
+  <!-- Subtle decorative ambient elements -->
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 pointer-events-none opacity-40 blur-3xl -z-10 bg-gradient-to-r from-sky-400/20 via-emerald-400/15 to-transparent"></div>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    
+    <!-- Location & Credibility Pills -->
+    <div class="inline-flex items-center gap-2 p-1.5 pr-4 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm mb-8 animate-fade-in select-none">
+      <span class="flex h-2.5 w-2.5 relative ml-1">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+      </span>
+      <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+        Direct WhatsApp Lead Network: <strong class="text-slate-900 dark:text-white">Sri Lanka</strong> & <strong class="text-slate-900 dark:text-white">Dubai (UAE)</strong>
+      </span>
+    </div>
+
+    <!-- Main Headline -->
+    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-6">
+      Building Digital Experiences <br class="hidden sm:block" />
+      <span class="text-gradient">That Grow Your Business.</span>
+    </h1>
+
+    <!-- Supporting Description -->
+    <p class="max-w-3xl mx-auto text-lg sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed mb-10 font-normal">
+      {SITE_CONFIG.subTagline}
+    </p>
+
+    <!-- CTAs Row -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
+      <a
+        href="/services/"
+        class="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-base text-white bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 shadow-lg shadow-slate-900/10 hover:shadow-xl transition-all duration-200 active:scale-95 inline-flex items-center justify-center gap-2"
+      >
+        <span>Explore Our Services</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+
+      <WhatsAppButton
+        location="lk"
+        variant="primary"
+        size="lg"
+        label="Chat on WhatsApp"
+        placement="hero"
+        class="w-full sm:w-auto"
+      />
+    </div>
+
+    <!-- The Prominent Large Search Bar -->
+    <div class="w-full pt-4 pb-2">
+      <div class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">
+        Instant Service Search & Solutions Finder
+      </div>
+      <SearchBar
+        large={true}
+        placeholder="What digital solution are you looking for?"
+      />
+    </div>
+
+  </div>
+</section>
+

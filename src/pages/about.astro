@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import CTA from '../components/CTA.astro';
+import { SITE_CONFIG } from '../config/site';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'About Us', url: '/about/' }
+];
+---
+
+<BaseLayout
+  title="About HiveSmart | Modern Digital Engineering Agency"
+  description="Learn about HiveSmart: Our transparent development approach, engineering standards, and commitment to delivering conversion-driven web and mobile solutions."
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <!-- Hero Header -->
+    <header class="max-w-4xl mx-auto text-center my-10 md:my-16">
+      <span class="text-xs font-extrabold uppercase tracking-widest text-sky-600 dark:text-sky-400">
+        About HiveSmart
+      </span>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mt-2 mb-6">
+        Modern Engineering Built Around <span class="text-gradient">Real Business Outcomes</span>
+      </h1>
+      <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl mx-auto">
+        We are a dedicated software and digital solutions agency operating across Sri Lanka and Dubai. We bridge the gap between creative visual design and enterprise-level web performance.
+      </p>
+    </header>
+
+    <!-- Core Purpose & Philosophy -->
+    <section class="py-12 border-t border-slate-200 dark:border-slate-800">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">What We Do</span>
+          <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            Digital Experiences That Solve Commercial Challenges
+          </h2>
+          <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-base">
+            Too many businesses are sold bloated templates that fail on mobile phones, break after plugin updates, and produce zero inquiries. We take a fundamentally different approach.
+          </p>
+          <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-base">
+            Every platform we build is engineered with clean, modern frameworks, optimized for edge-delivery on Cloudflare, and structured around direct, frictionless WhatsApp conversion channels tailored for our core markets in Sri Lanka and the UAE.
+          </p>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-slate-900 text-white border border-slate-800 space-y-6">
+          <h3 class="text-xl font-bold text-sky-400">Our Core Principles</h3>
+          <ul class="space-y-4 text-sm text-slate-300">
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-400 font-bold text-base">✓</span>
+              <span><strong>Sub-Second Speed:</strong> Websites should load instantly without frustrating visitors on mobile networks.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-400 font-bold text-base">✓</span>
+              <span><strong>Radical Transparency:</strong> Clear milestones, documented codebases, and direct communication with lead architects.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-400 font-bold text-base">✓</span>
+              <span><strong>Conversion First:</strong> Beautiful design must serve a purpose—generating qualified customer leads.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-400 font-bold text-base">✓</span>
+              <span><strong>Full Ownership:</strong> Clients retain 100% intellectual property of their code, designs, and credentials.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Development Approach -->
+    <section class="py-16 border-t border-slate-200 dark:border-slate-800">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">Our Workflow</span>
+        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
+          How We Work With Clients
+        </h2>
+        <p class="text-sm text-slate-600 dark:text-slate-300 mt-2">
+          From the first WhatsApp message to production deployment and long-term scaling.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <span class="text-3xl font-black text-sky-500 mb-2 block">1</span>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Direct Discovery</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+            We chat directly on WhatsApp to understand your audience, competitors in Sri Lanka or Dubai, and key project deliverables.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <span class="text-3xl font-black text-sky-500 mb-2 block">2</span>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Prototype & UX</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+            We lay out intuitive, clean wireframes prioritizing visual whitespace, typography, and clear calls to action.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <span class="text-3xl font-black text-sky-500 mb-2 block">3</span>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Edge Development</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+            We write clean, semantic code with automated testing, rigorous mobile QA, and technical SEO schema markup.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <span class="text-3xl font-black text-sky-500 mb-2 block">4</span>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Global Launch</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+            We deploy to Cloudflare edge CDN with SSL, automated database backups, and hand over complete access and source files.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Regional Presence Hubs -->
+    <section class="py-16 border-t border-slate-200 dark:border-slate-800">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Regional Footprint</span>
+        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
+          Serving Sri Lanka, Dubai & International Clients
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">🇱🇰</span>
+              <div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Sri Lanka Office</h3>
+                <p class="text-xs text-slate-500">{SITE_CONFIG.contacts.sriLanka.city}</p>
+              </div>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+              Empowering local brands, corporates, and exporters with world-class digital platforms, local payment gateway integrations (PayHere/Commercial/Sampath), and rapid delivery.
+            </p>
+          </div>
+          <WhatsAppButton
+            location="lk"
+            size="md"
+            variant="primary"
+            label="Connect with Sri Lanka Office"
+            placement="about_lk"
+          />
+        </div>
+
+        <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">🇦🇪</span>
+              <div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Dubai / UAE Office</h3>
+                <p class="text-xs text-slate-500">{SITE_CONFIG.contacts.dubai.city}</p>
+              </div>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+              Servicing GCC enterprises, UAE commercial firms, and professionals requiring ATS-compliant executive portfolios and high-security mobile platforms.
+            </p>
+          </div>
+          <WhatsAppButton
+            location="uae"
+            size="md"
+            variant="secondary"
+            label="Connect with Dubai Office"
+            placement="about_uae"
+          />
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <CTA
+    headline="Partner with a Development Team That Cares"
+    description="Tell us about your project on WhatsApp for an immediate consultation."
+  />
+</BaseLayout>
+

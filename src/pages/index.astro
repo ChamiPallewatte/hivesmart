@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import BlogCard from '../components/BlogCard.astro';
+import CTA from '../components/CTA.astro';
+import { SERVICES } from '../config/services';
+import { getAllPosts } from '../lib/database/initial-posts';
+
+const recentPosts = getAllPosts().slice(0, 3);
+---
+
+<BaseLayout
+  title="HiveSmart | High-Performance Web Development & Digital Solutions"
+  description="HiveSmart is a premier digital agency providing high-performance website development, ATS-friendly CV design, and custom mobile applications in Sri Lanka & Dubai."
+>
+  <!-- 1. Hero Section with Prominent Search Bar -->
+  <Hero />
+
+  <!-- 2. Short Services Preview (3 Main Services, Web Dev has Primary Priority) -->
+  <section class="py-20 bg-slate-50 dark:bg-slate-950 border-t border-slate-200/60 dark:border-slate-800/60" id="services-preview">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-extrabold uppercase tracking-widest text-sky-600 dark:text-sky-400">
+          Core Capabilities
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-2 mb-4 tracking-tight">
+          Specialized Digital Solutions Built for Conversion
+        </h2>
+        <p class="text-base text-slate-600 dark:text-slate-300">
+          We focus on three high-impact disciplines. Every solution is engineered from the ground up for speed, reliability, and business growth.
+        </p>
+      </div>
+
+      <!-- Services Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+        {SERVICES.map((service) => (
+          <ServiceCard service={service} />
+        ))}
+      </div>
+
+      <!-- Link to Full Detailed Services Page -->
+      <div class="text-center mt-12">
+        <a
+          href="/services/"
+          class="inline-flex items-center gap-2 text-sm font-bold text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 group"
+        >
+          <span>View All Service Specifications & FAQs</span>
+          <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. Why Modern Companies Partner with HiveSmart -->
+  <section class="py-20 bg-white dark:bg-slate-900 border-t border-slate-200/60 dark:border-slate-800/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <div class="p-8 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800">
+          <div class="w-12 h-12 rounded-2xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center font-bold text-xl mb-6">
+            ⚡
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Sub-Second Edge Speeds</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Deployed across Cloudflare’s 300+ worldwide points of presence. Visitors in Colombo, Dubai, London, or New York experience instant, zero-lag page loads.
+          </p>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xl mb-6">
+            💬
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Zero-Friction WhatsApp Funnels</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            We replace outdated, slow email forms with high-conversion 1-tap WhatsApp lead links that connect your prospective clients straight to your sales team.
+          </p>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-xl mb-6">
+            🛡️
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Clean, Plugin-Free Architecture</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            No fragile bloated templates or security vulnerabilities. Clean semantic HTML5, TypeScript, and modern frameworks ensure years of zero-headache stability.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Recent Blog Insights -->
+  <section class="py-20 bg-slate-50 dark:bg-slate-950 border-t border-slate-200/60 dark:border-slate-800/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-widest text-sky-600 dark:text-sky-400">
+            Insights & Guides
+          </span>
+          <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1 tracking-tight">
+            Latest Industry Articles
+          </h2>
+        </div>
+        <a href="/blog/" class="mt-4 md:mt-0 text-sm font-bold text-sky-600 dark:text-sky-400 hover:underline">
+          View All Insights →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {recentPosts.map((post) => (
+          <BlogCard post={post} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Final CTA Section -->
+  <CTA
+    headline="Have a Project in Mind?"
+    description="Let's discuss how we can help your business grow. Chat directly with senior technical consultants in Sri Lanka and Dubai."
+  />
+</BaseLayout>
+

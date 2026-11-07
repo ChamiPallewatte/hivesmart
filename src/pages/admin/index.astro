@@ -1,0 +1,209 @@
+---
+import { SITE_CONFIG } from '../../config/site';
+import { getAllPosts } from '../../lib/database/initial-posts';
+import '../../styles/global.css';
+
+export const prerender = false;
+
+// Basic admin authentication session simulation via Cookie / Secret Key
+const adminSecret = import.meta.env.ADMIN_SECRET_KEY || 'default_admin_key';
+const cookies = Astro.request.headers.get('cookie') || '';
+let isAuthenticated = cookies.includes(`hivesmart_admin_auth=${adminSecret}`);
+
+let errorMessage = '';
+
+if (Astro.request.method === 'POST') {
+  try {
+    const formData = await Astro.request.formData();
+    const action = formData.get('action');
+
+    if (action === 'login') {
+      const password = formData.get('password');
+      const expectedPassword = import.meta.env.ADMIN_SESSION_PASSWORD || 'hivesmart2026';
+
+      if (password === expectedPassword) {
+        isAuthenticated = true;
+        Astro.response.headers.set(
+          'Set-Cookie',
+          `hivesmart_admin_auth=${adminSecret}; HttpOnly; Path=/admin; SameSite=Strict; Max-Age=86400`
+        );
+      } else {
+        errorMessage = 'Invalid administrative credentials';
+      }
+    } else if (action === 'logout') {
+      isAuthenticated = false;
+      Astro.response.headers.set(
+        'Set-Cookie',
+        `hivesmart_admin_auth=; HttpOnly; Path=/admin; SameSite=Strict; Max-Age=0`
+      );
+    }
+  } catch (err) {
+    errorMessage = 'Failed to process request';
+  }
+}
+
+const posts = getAllPosts();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HiveSmart Admin Portal</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased">
+    
+    {!isAuthenticated ? (
+      <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-md p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center p-1.5">
+              <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
+                <polygon points="50,6 90,29 90,75 50,98 10,75 10,29" fill="#0f172a" stroke="#0284c7" stroke-width="6" />
+                <circle cx="50" cy="50" r="10" fill="#10b981" />
+              </svg>
+            </div>
+            <div>
+              <h1 class="text-xl font-bold text-white">HiveSmart Admin</h1>
+              <p class="text-xs text-slate-400">Secure Management Portal</p>
+            </div>
+          </div>
+
+          {errorMessage && (
+            <div class="mb-6 p-3 rounded-xl bg-rose-950/60 border border-rose-800 text-rose-300 text-xs">
+              {errorMessage}
+            </div>
+          )}
+
+          <form method="POST" class="space-y-4">
+            <input type="hidden" name="action" value="login" />
+            <div>
+              <label for="password" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                Administrator Key
+              </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                required
+                placeholder="Enter password..."
+                class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 text-sm"
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full py-3.5 rounded-xl bg-sky-600 hover:bg-sky-500 font-bold text-sm text-white transition-colors"
+            >
+              Authenticate & Unlock
+            </button>
+          </form>
+
+          <p class="text-xs text-slate-500 text-center mt-6">
+            Default local dev key: <code class="text-slate-400">hivesmart2026</code> (configurable via ADMIN_SESSION_PASSWORD)
+          </p>
+        </div>
+      </div>
+    ) : (
+      <div class="min-h-screen flex flex-col">
+        <header class="border-b border-slate-800 bg-slate-900/80 px-6 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <h1 class="text-lg font-bold text-white">HiveSmart Dashboard</h1>
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 font-semibold">
+              Authenticated
+            </span>
+          </div>
+          <form method="POST">
+            <input type="hidden" name="action" value="logout" />
+            <button type="submit" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">
+              Sign Out
+            </button>
+          </form>
+        </header>
+
+        <main class="flex-1 max-w-7xl mx-auto w-full p-6 space-y-8">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+              <p class="text-xs uppercase font-bold text-slate-400">Database Engine</p>
+              <p class="text-2xl font-bold text-white mt-1">Cloudflare D1 (SQLite)</p>
+              <p class="text-xs text-emerald-400 mt-2">Prisma ORM Adapter Active</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+              <p class="text-xs uppercase font-bold text-slate-400">Live Articles</p>
+              <p class="text-2xl font-bold text-white mt-1">{posts.length} Published</p>
+              <p class="text-xs text-sky-400 mt-2">All Indexed with Schema</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+              <p class="text-xs uppercase font-bold text-slate-400">Regional Endpoints</p>
+              <p class="text-xl font-bold text-white mt-1">Sri Lanka & Dubai</p>
+              <p class="text-xs text-slate-400 mt-2">LK: +94 77 809 1278 | UAE: +971 54 771 5370</p>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-bold text-white">Published Articles & SEO Meta</h2>
+              <a href="/blog/" target="_blank" class="text-xs font-bold text-sky-400 hover:underline">
+                View Public Blog →
+              </a>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-300">
+                <thead class="bg-slate-800 text-slate-400 uppercase text-[10px] tracking-wider">
+                  <tr>
+                    <th class="p-3">Title</th>
+                    <th class="p-3">Category</th>
+                    <th class="p-3">Reading Time</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800">
+                  {posts.map((post) => (
+                    <tr>
+                      <td class="p-3 font-semibold text-white max-w-xs truncate">{post.title}</td>
+                      <td class="p-3 text-sky-400">{post.category.name}</td>
+                      <td class="p-3">{post.readingTime} min</td>
+                      <td class="p-3">
+                        <span class="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 font-semibold text-[10px]">
+                          Published
+                        </span>
+                      </td>
+                      <td class="p-3">
+                        <a href={`/blog/${post.slug}/`} target="_blank" class="text-sky-400 hover:underline font-bold">
+                          View
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+            <h2 class="text-xl font-bold text-white mb-4">Business Phone & Location Configuration</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+              <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700">
+                <p class="font-bold text-white">Sri Lanka Office</p>
+                <p class="text-xs text-slate-400 mt-1">Phone: {SITE_CONFIG.contacts.sriLanka.phoneDisplay}</p>
+                <p class="text-xs text-slate-400">Address: {SITE_CONFIG.contacts.sriLanka.fullAddress}</p>
+                <p class="text-xs text-emerald-400 mt-1">WhatsApp wa.me/{SITE_CONFIG.contacts.sriLanka.whatsappNumber}</p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700">
+                <p class="font-bold text-white">Dubai / UAE Office</p>
+                <p class="text-xs text-slate-400 mt-1">Phone: {SITE_CONFIG.contacts.dubai.phoneDisplay}</p>
+                <p class="text-xs text-slate-400">Address: {SITE_CONFIG.contacts.dubai.fullAddress}</p>
+                <p class="text-xs text-emerald-400 mt-1">WhatsApp wa.me/{SITE_CONFIG.contacts.dubai.whatsappNumber}</p>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    )}
+
+  </body>
+</html>

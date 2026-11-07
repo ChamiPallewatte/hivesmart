@@ -1,0 +1,123 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { getArticleSchema } from '../lib/seo/schema';
+import type { StaticBlogPost } from '../lib/database/initial-posts';
+
+interface Props {
+  post: StaticBlogPost;
+}
+
+const { post } = Astro.props;
+
+const articleSchema = getArticleSchema({
+  title: post.title,
+  description: post.description,
+  slug: post.slug,
+  publishedAt: post.publishedAt,
+  updatedAt: post.updatedAt,
+  author: post.author,
+  image: post.featuredImage
+});
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Blog', url: '/blog/' },
+  { name: post.title, url: `/blog/${post.slug}/` }
+];
+
+const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<BaseLayout
+  title={post.seoTitle || post.title}
+  description={post.seoDescription || post.description}
+  ogImage={post.featuredImage}
+  ogType="article"
+  publishedTime={post.publishedAt}
+  modifiedTime={post.updatedAt}
+  author={post.author}
+  keywords={post.tags}
+  structuredData={articleSchema}
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <!-- Article Header -->
+    <header class="my-8 space-y-4">
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-800">
+          {post.category.name}
+        </span>
+        <span class="text-xs text-slate-400">•</span>
+        <span class="text-xs text-slate-500 dark:text-slate-400">{post.readingTime} min read</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.2]">
+        {post.title}
+      </h1>
+
+      <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+        {post.description}
+      </p>
+
+      <div class="flex items-center gap-3 pt-2 text-xs text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 pb-6">
+        <span>By <strong class="text-slate-900 dark:text-white">{post.author}</strong></span>
+        <span>•</span>
+        <time datetime={post.publishedAt}>{formattedDate}</time>
+      </div>
+    </header>
+
+    <!-- Featured Visual -->
+    <div class="mb-10 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xl bg-slate-950">
+      <img
+        src={post.featuredImage}
+        alt={post.title}
+        width="1200"
+        height="630"
+        class="w-full h-auto object-cover"
+        loading="eager"
+      />
+    </div>
+
+    <!-- Article Body -->
+    <div class="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 leading-relaxed space-y-6">
+      <slot />
+    </div>
+
+    <!-- Contextual WhatsApp Lead In-Article Box -->
+    <div class="my-12 p-8 rounded-3xl bg-gradient-to-r from-sky-900/10 via-emerald-900/10 to-sky-900/10 border-2 border-emerald-500/30 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="space-y-1 text-center sm:text-left">
+        <p class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Technical Advisory</p>
+        <h4 class="text-xl font-bold text-slate-900 dark:text-white">Need Expert Help with Your Digital Project?</h4>
+        <p class="text-sm text-slate-600 dark:text-slate-300">Discuss custom web builds, ATS CV audits, or mobile app roadmaps with our team right now.</p>
+      </div>
+      <div class="flex-shrink-0">
+        <WhatsAppButton
+          location="lk"
+          serviceName={post.category.name}
+          label="Chat on WhatsApp"
+          variant="primary"
+          size="md"
+          placement="blog_article_cta"
+        />
+      </div>
+    </div>
+
+    <!-- Tags Row -->
+    <div class="pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-2">
+      <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Tags:</span>
+      {post.tags.map((tag) => (
+        <span class="text-xs px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300">
+          #{tag}
+        </span>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
