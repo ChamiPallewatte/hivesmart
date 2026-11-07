@@ -9,6 +9,7 @@ export default defineConfig({
   adapter: cloudflare({
     imageService: 'passthrough'
   }),
+  session: false,
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()]
