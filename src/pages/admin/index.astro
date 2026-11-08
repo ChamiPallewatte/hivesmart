@@ -14,7 +14,12 @@ let isAuthenticated = Astro.cookies.get('hivesmart_admin_auth')?.value === admin
 let errorMessage = '';
 let successMessage = '';
 
-const d1Binding = (Astro.locals as any)?.runtime?.env?.DB;
+let d1Binding: any = null;
+try {
+  // @ts-ignore
+  const cf = await import('cloudflare:workers');
+  d1Binding = cf?.env?.DB;
+} catch {}
 
 if (Astro.request.method === 'POST') {
   try {
