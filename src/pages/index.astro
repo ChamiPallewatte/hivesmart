@@ -8,28 +8,96 @@ import { SERVICES } from '../config/services';
 import { getAllPosts } from '../lib/database/initial-posts';
 
 const recentPosts = getAllPosts().slice(0, 3);
+
+// Tech Stack Showcase
+const techStack = [
+  { name: 'Astro 7', role: 'Zero-JS Core', icon: '🚀' },
+  { name: 'Cloudflare Edge', role: '300+ Global PoPs', icon: '⚡' },
+  { name: 'TypeScript', role: 'Strict Type Safety', icon: '🛡️' },
+  { name: 'Flutter & iOS', role: 'Native Performance', icon: '📱' },
+  { name: 'WordPress & WooCommerce', role: 'Custom Themes', icon: '⚙️' },
+  { name: 'Tailwind CSS v4', role: 'Modern UI Engine', icon: '🎨' },
+  { name: 'SQLite & D1', role: 'Edge Database', icon: '🗄️' },
+  { name: 'WhatsApp API', role: 'Instant Conversion', icon: '💬' }
+];
+
+// 5-Step Engineering Process
+const processSteps = [
+  {
+    step: '01',
+    title: 'Discovery & Strategic Scoping',
+    desc: 'We analyze your target market in Sri Lanka, Dubai, or globally, defining high-converting features and zero-bloat tech requirements.'
+  },
+  {
+    step: '02',
+    title: 'High-Fidelity UI/UX Architecture',
+    desc: 'Crafting pixel-perfect, mobile-first responsive wireframes and interactive prototypes with seamless WhatsApp inquiry triggers.'
+  },
+  {
+    step: '03',
+    title: 'Edge-First Software Engineering',
+    desc: 'Developing on modern frameworks with clean semantic HTML, TypeScript, and serverless edge functions for sub-second execution.'
+  },
+  {
+    step: '04',
+    title: 'Core Web Vitals & SEO Rigor',
+    desc: 'Rigorous optimization achieving 95+ Google PageSpeed scores, automated XML sitemaps, JSON-LD Schema, and meta tagging.'
+  },
+  {
+    step: '05',
+    title: 'WhatsApp Launch & Real-Time Inquiries',
+    desc: 'Deploying to Cloudflare global network with instant WhatsApp routing to your regional consultants for continuous deal flow.'
+  }
+];
 ---
 
 <BaseLayout
   title="HiveSmart | High-Performance Web Development & Digital Solutions"
   description="HiveSmart is a premier digital agency providing high-performance website development, ATS-friendly CV design, and custom mobile applications in Sri Lanka & Dubai."
 >
-  <!-- 1. Hero Section with Prominent Search Bar -->
+  <!-- 1. Hero Section with Prominent Spotlight Live Search Bar -->
   <Hero />
 
-  <!-- 2. Short Services Preview (3 Main Services, Web Dev has Primary Priority) -->
-  <section class="py-20 bg-slate-50 dark:bg-slate-950 border-t border-slate-200/60 dark:border-slate-800/60" id="services-preview">
+  <!-- 2. Tech Stack & Framework Showcase Ticker -->
+  <section class="py-8 bg-[#040b1b] border-y border-amber-500/20 relative z-10 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+          <span class="text-xs font-black uppercase tracking-widest text-amber-400">
+            Engineered With Modern Tech:
+          </span>
+        </div>
+        <div class="flex items-center gap-3 overflow-x-auto w-full md:w-auto py-2 no-scrollbar">
+          {techStack.map((tech) => (
+            <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-200 whitespace-nowrap hover:border-amber-500/50 transition-colors">
+              <span>{tech.icon}</span>
+              <span class="font-bold text-white">{tech.name}</span>
+              <span class="text-[10px] text-amber-400/80 font-mono">({tech.role})</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Core Capabilities Section (Website Development Prioritized) -->
+  <section class="py-24 bg-[#050e22] relative" id="services-preview">
+    <!-- Ambient mesh background -->
+    <div class="glow-orb-gold top-20 right-10 w-96 h-96 opacity-20"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <div class="text-center max-w-3xl mx-auto mb-16">
-        <span class="text-xs font-extrabold uppercase tracking-widest text-sky-600 dark:text-sky-400">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest bg-amber-500/10 text-amber-400 border border-amber-500/30 mb-3">
           Core Capabilities
         </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-2 mb-4 tracking-tight">
-          Specialized Digital Solutions Built for Conversion
+        <h2 class="text-3xl sm:text-5xl font-black text-white mt-2 mb-4 tracking-tight">
+          Specialized Digital Solutions <br />
+          <span class="text-gradient-gold">Engineered for Conversion</span>
         </h2>
-        <p class="text-base text-slate-600 dark:text-slate-300">
-          We focus on three high-impact disciplines. Every solution is engineered from the ground up for speed, reliability, and business growth.
+        <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
+          We focus on three high-impact disciplines. Every solution is architected from the ground up for speed, reliability, and business revenue.
         </p>
       </div>
 
@@ -41,14 +109,14 @@ const recentPosts = getAllPosts().slice(0, 3);
       </div>
 
       <!-- Link to Full Detailed Services Page -->
-      <div class="text-center mt-12">
+      <div class="text-center mt-14">
         <a
           href="/services/"
-          class="inline-flex items-center gap-2 text-sm font-bold text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 group"
+          class="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-amber-400 border border-amber-500/30 hover:border-amber-400 text-sm font-bold shadow-lg transition-all group"
         >
-          <span>View All Service Specifications & FAQs</span>
+          <span>View All Service Specifications & Sub-Services</span>
           <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>
         </a>
       </div>
@@ -56,38 +124,87 @@ const recentPosts = getAllPosts().slice(0, 3);
     </div>
   </section>
 
-  <!-- 3. Why Modern Companies Partner with HiveSmart -->
-  <section class="py-20 bg-white dark:bg-slate-900 border-t border-slate-200/60 dark:border-slate-800/60">
+  <!-- 4. 5-Step Engineering Architecture -->
+  <section class="py-24 bg-[#081736]/60 border-t border-slate-800 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-black uppercase tracking-widest text-amber-400">
+          Our Methodology
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-black text-white mt-2 mb-4 tracking-tight">
+          The 5-Step Proven Engineering Process
+        </h2>
+        <p class="text-base text-slate-300">
+          From initial consultation to deployment, how we consistently deliver sub-second, lead-generating digital assets.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        {processSteps.map((p) => (
+          <div class="p-6 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 transition-all flex flex-col justify-between group">
+            <div>
+              <span class="text-2xl sm:text-3xl font-black font-mono text-amber-400/50 group-hover:text-amber-400 transition-colors">
+                {p.step}
+              </span>
+              <h3 class="text-base font-bold text-white mt-3 mb-2 group-hover:text-amber-300 transition-colors">
+                {p.title}
+              </h3>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                {p.desc}
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-amber-400/80 font-mono">
+              <span>Phase {p.step}</span>
+              <span>✓ Verified</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Why Modern Companies Partner with HiveSmart -->
+  <section class="py-24 bg-[#050e22] border-t border-slate-800/80">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-black uppercase tracking-widest text-amber-400">
+          The HiveSmart Advantage
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-black text-white mt-2 mb-4 tracking-tight">
+          Why Discerning Businesses Choose Our Architecture
+        </h2>
+      </div>
+
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <div class="p-8 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800">
-          <div class="w-12 h-12 rounded-2xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center font-bold text-xl mb-6">
+        <div class="p-8 rounded-3xl glass-panel-luxury card-glow-hover">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center font-bold text-2xl mb-6">
             ⚡
           </div>
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Sub-Second Edge Speeds</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-            Deployed across Cloudflare’s 300+ worldwide points of presence. Visitors in Colombo, Dubai, London, or New York experience instant, zero-lag page loads.
+          <h3 class="text-xl font-bold text-white mb-2">Sub-Second Global Edge Speeds</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Deployed across Cloudflare’s 300+ worldwide points of presence. Visitors in Colombo, Dubai, London, or New York experience instant, zero-lag page rendering.
           </p>
         </div>
 
-        <div class="p-8 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xl mb-6">
+        <div class="p-8 rounded-3xl glass-panel-luxury card-glow-hover">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold text-2xl mb-6">
             💬
           </div>
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Zero-Friction WhatsApp Funnels</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-            We replace outdated, slow email forms with high-conversion 1-tap WhatsApp lead links that connect your prospective clients straight to your sales team.
+          <h3 class="text-xl font-bold text-white mb-2">Zero-Friction WhatsApp Funnels</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            We replace outdated, slow email forms with high-conversion 1-tap WhatsApp lead links that connect prospective clients straight to your senior team in real-time.
           </p>
         </div>
 
-        <div class="p-8 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800">
-          <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-xl mb-6">
+        <div class="p-8 rounded-3xl glass-panel-luxury card-glow-hover">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center font-bold text-2xl mb-6">
             🛡️
           </div>
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Clean, Plugin-Free Architecture</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-            No fragile bloated templates or security vulnerabilities. Clean semantic HTML5, TypeScript, and modern frameworks ensure years of zero-headache stability.
+          <h3 class="text-xl font-bold text-white mb-2">Clean, Plugin-Free Architecture</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            No fragile bloated templates or security vulnerabilities. Clean semantic HTML5, TypeScript, and modern edge runtimes ensure years of zero-headache stability.
           </p>
         </div>
 
@@ -95,20 +212,23 @@ const recentPosts = getAllPosts().slice(0, 3);
     </div>
   </section>
 
-  <!-- 4. Recent Blog Insights -->
-  <section class="py-20 bg-slate-50 dark:bg-slate-950 border-t border-slate-200/60 dark:border-slate-800/60">
+  <!-- 6. Recent Blog Insights -->
+  <section class="py-24 bg-[#081736]/40 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
         <div>
-          <span class="text-xs font-extrabold uppercase tracking-widest text-sky-600 dark:text-sky-400">
+          <span class="text-xs font-black uppercase tracking-widest text-amber-400">
             Insights & Guides
           </span>
-          <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1 tracking-tight">
+          <h2 class="text-3xl font-black text-white mt-1 tracking-tight">
             Latest Industry Articles
           </h2>
         </div>
-        <a href="/blog/" class="mt-4 md:mt-0 text-sm font-bold text-sky-600 dark:text-sky-400 hover:underline">
-          View All Insights →
+        <a href="/blog/" class="mt-4 md:mt-0 text-sm font-bold text-amber-400 hover:text-amber-300 inline-flex items-center gap-1 group">
+          <span>View All Insights</span>
+          <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
         </a>
       </div>
 
@@ -120,10 +240,9 @@ const recentPosts = getAllPosts().slice(0, 3);
     </div>
   </section>
 
-  <!-- 5. Final CTA Section -->
+  <!-- 7. Final CTA Section -->
   <CTA
-    headline="Have a Project in Mind?"
-    description="Let's discuss how we can help your business grow. Chat directly with senior technical consultants in Sri Lanka and Dubai."
+    headline="Ready to Elevate Your Digital Presence?"
+    description="Let's engineer a solution that outpaces your competition. Chat directly with our senior consultants in Sri Lanka and Dubai."
   />
 </BaseLayout>
-

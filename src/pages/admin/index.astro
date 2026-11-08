@@ -1,6 +1,8 @@
 ---
 import { SITE_CONFIG } from '../../config/site';
-import { getAllPosts } from '../../lib/database/initial-posts';
+import { SERVICES } from '../../config/services';
+import { getAllPosts, type StaticBlogPost } from '../../lib/database/initial-posts';
+import { getBlogArticles, createBlogPost, deleteBlogPost } from '../../lib/database/db';
 import '../../styles/global.css';
 
 export const prerender = false;
@@ -11,6 +13,9 @@ const cookies = Astro.request.headers.get('cookie') || '';
 let isAuthenticated = cookies.includes(`hivesmart_admin_auth=${adminSecret}`);
 
 let errorMessage = '';
+let successMessage = '';
+
+const d1Binding = (Astro.locals as any)?.runtime?.env?.DB;
 
 if (Astro.request.method === 'POST') {
   try {
@@ -28,7 +33,7 @@ if (Astro.request.method === 'POST') {
           `hivesmart_admin_auth=${adminSecret}; HttpOnly; Path=/admin; SameSite=Strict; Max-Age=86400`
         );
       } else {
-        errorMessage = 'Invalid administrative credentials';
+        errorMessage = 'Invalid administrative password. Try hivesmart2026';
       }
     } else if (action === 'logout') {
       isAuthenticated = false;
@@ -36,13 +41,59 @@ if (Astro.request.method === 'POST') {
         'Set-Cookie',
         `hivesmart_admin_auth=; HttpOnly; Path=/admin; SameSite=Strict; Max-Age=0`
       );
+    } else if (action === 'create_post' && isAuthenticated) {
+      const title = String(formData.get('title') || '').trim();
+      let slug = String(formData.get('slug') || '').trim();
+      const categoryName = String(formData.get('categoryName') || 'Website Development').trim();
+      const description = String(formData.get('description') || '').trim();
+      const content = String(formData.get('content') || '').trim();
+      const author = String(formData.get('author') || 'HiveSmart Team').trim();
+      const readingTime = Number(formData.get('readingTime')) || 5;
+      const tags = String(formData.get('tags') || '')
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean);
+
+      if (!title || !content) {
+        errorMessage = 'Please provide both an article Title and Content.';
+      } else {
+        if (!slug) {
+          slug = title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-|-$/g, '');
+        }
+
+        await createBlogPost(
+          {
+            title,
+            slug,
+            categoryName,
+            description: description || title,
+            content,
+            author,
+            readingTime,
+            tags
+          },
+          d1Binding
+        );
+
+        successMessage = `Article "${title}" published successfully! Accessible at /blog/${slug}/`;
+      }
+    } else if (action === 'delete_post' && isAuthenticated) {
+      const slug = String(formData.get('slug') || '').trim();
+      if (slug) {
+        await deleteBlogPost(slug, d1Binding);
+        successMessage = `Article with slug "${slug}" has been deleted.`;
+      }
     }
-  } catch (err) {
-    errorMessage = 'Failed to process request';
+  } catch (err: any) {
+    errorMessage = `Action failed: ${err?.message || 'Server error'}`;
   }
 }
 
-const posts = getAllPosts();
+// Fetch current posts
+const posts = await getBlogArticles(d1Binding);
 ---
 
 <!doctype html>
@@ -50,160 +101,584 @@ const posts = getAllPosts();
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HiveSmart Admin Portal</title>
+    <title>HiveSmart Admin & Content Studio</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="robots" content="noindex, nofollow" />
   </head>
-  <body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased">
+  <body class="bg-[#050e22] text-slate-100 min-h-screen font-sans antialiased bg-honeycomb-pattern">
     
     {!isAuthenticated ? (
       <div class="min-h-screen flex items-center justify-center p-4">
-        <div class="w-full max-w-md p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center p-1.5">
-              <svg viewBox="0 0 100 100" class="w-full h-full" fill="none">
-                <polygon points="50,6 90,29 90,75 50,98 10,75 10,29" fill="#0f172a" stroke="#0284c7" stroke-width="6" />
-                <circle cx="50" cy="50" r="10" fill="#10b981" />
-              </svg>
+        <div class="w-full max-w-md p-8 sm:p-10 rounded-3xl bg-[#081736]/90 border-2 border-amber-500/40 shadow-2xl backdrop-blur-2xl">
+          <!-- Central Brand Logo -->
+          <div class="flex items-center gap-3.5 mb-8">
+            <div class="w-12 h-12 rounded-2xl bg-slate-900 border border-amber-500/40 flex items-center justify-center p-2 shadow-inner">
+              <img src="/images/logo-icon.png" alt="HiveSmart Mark" class="w-full h-full object-contain" />
             </div>
             <div>
-              <h1 class="text-xl font-bold text-white">HiveSmart Admin</h1>
-              <p class="text-xs text-slate-400">Secure Management Portal</p>
+              <h1 class="text-xl font-black text-white tracking-tight">
+                Hive <span class="text-amber-400">smart</span> Admin
+              </h1>
+              <p class="text-xs text-amber-400/90 font-mono">Content & Service Studio</p>
             </div>
           </div>
 
           {errorMessage && (
-            <div class="mb-6 p-3 rounded-xl bg-rose-950/60 border border-rose-800 text-rose-300 text-xs">
-              {errorMessage}
+            <div class="mb-6 p-3.5 rounded-2xl bg-rose-950/80 border border-rose-800 text-rose-200 text-xs flex items-center gap-2">
+              <span>⚠️</span>
+              <span>{errorMessage}</span>
             </div>
           )}
 
-          <form method="POST" class="space-y-4">
+          <form method="POST" class="space-y-5">
             <input type="hidden" name="action" value="login" />
             <div>
-              <label for="password" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
-                Administrator Key
+              <label for="password" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                Administrator Password Key
               </label>
               <input
                 type="password"
                 name="password"
                 id="password"
                 required
-                placeholder="Enter password..."
-                class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 text-sm"
+                placeholder="Enter admin password..."
+                class="w-full px-4 py-3.5 rounded-2xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 text-sm font-medium transition-all"
               />
             </div>
             <button
               type="submit"
-              class="w-full py-3.5 rounded-xl bg-sky-600 hover:bg-sky-500 font-bold text-sm text-white transition-colors"
+              class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 hover:from-amber-300 hover:to-amber-500 font-black text-sm text-[#081736] transition-all shadow-lg shadow-amber-500/20 cursor-pointer active:scale-95"
             >
-              Authenticate & Unlock
+              Authenticate & Open Dashboard
             </button>
           </form>
 
-          <p class="text-xs text-slate-500 text-center mt-6">
-            Default local dev key: <code class="text-slate-400">hivesmart2026</code> (configurable via ADMIN_SESSION_PASSWORD)
-          </p>
+          <div class="mt-8 pt-6 border-t border-slate-800 text-center">
+            <p class="text-xs text-slate-400">
+              Default Master Key: <code class="px-2 py-1 rounded bg-slate-900 text-amber-300 font-mono font-bold border border-slate-700">hivesmart2026</code>
+            </p>
+            <p class="text-[11px] text-slate-500 mt-2">
+              Configurable via Cloudflare Worker environment variables (<code class="text-slate-400">ADMIN_SESSION_PASSWORD</code>).
+            </p>
+          </div>
         </div>
       </div>
     ) : (
       <div class="min-h-screen flex flex-col">
-        <header class="border-b border-slate-800 bg-slate-900/80 px-6 py-4 flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <h1 class="text-lg font-bold text-white">HiveSmart Dashboard</h1>
-            <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 font-semibold">
-              Authenticated
+        <!-- Top Studio Header -->
+        <header class="border-b border-amber-500/20 bg-[#081736]/90 backdrop-blur-xl px-6 py-4 flex items-center justify-between sticky top-0 z-40">
+          <div class="flex items-center gap-4">
+            <a href="/" class="flex items-center gap-2 group">
+              <img src="/images/logo-icon.png" alt="Logo" class="w-8 h-8 object-contain" />
+              <span class="text-lg font-black text-white">Hive <span class="text-amber-400">smart</span> Studio</span>
+            </a>
+            <span class="hidden sm:inline-flex text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800 font-bold">
+              ● Live Studio Mode
             </span>
           </div>
-          <form method="POST">
-            <input type="hidden" name="action" value="logout" />
-            <button type="submit" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">
-              Sign Out
-            </button>
-          </form>
+
+          <div class="flex items-center gap-3">
+            <a href="/" target="_blank" class="text-xs font-bold text-slate-300 hover:text-amber-300 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 transition-colors">
+              Public Site ↗
+            </a>
+            <form method="POST">
+              <input type="hidden" name="action" value="logout" />
+              <button type="submit" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800/80 transition-colors cursor-pointer">
+                Sign Out
+              </button>
+            </form>
+          </div>
         </header>
 
-        <main class="flex-1 max-w-7xl mx-auto w-full p-6 space-y-8">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-              <p class="text-xs uppercase font-bold text-slate-400">Database Engine</p>
-              <p class="text-2xl font-bold text-white mt-1">Cloudflare D1 (SQLite)</p>
-              <p class="text-xs text-emerald-400 mt-2">Prisma ORM Adapter Active</p>
+        <!-- Studio Body Navigation & Main Content -->
+        <main class="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8 space-y-8">
+          
+          <!-- Alert feedback banners -->
+          {successMessage && (
+            <div class="p-4 rounded-2xl bg-emerald-950/90 border border-emerald-500/50 text-emerald-200 text-sm flex items-center justify-between shadow-lg">
+              <div class="flex items-center gap-2">
+                <span>✅</span>
+                <span>{successMessage}</span>
+              </div>
+              <a href="/blog/" target="_blank" class="text-xs font-bold underline hover:text-white">View in Public Blog →</a>
             </div>
-            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-              <p class="text-xs uppercase font-bold text-slate-400">Live Articles</p>
-              <p class="text-2xl font-bold text-white mt-1">{posts.length} Published</p>
-              <p class="text-xs text-sky-400 mt-2">All Indexed with Schema</p>
+          )}
+
+          {errorMessage && (
+            <div class="p-4 rounded-2xl bg-rose-950/90 border border-rose-500/50 text-rose-200 text-sm flex items-center gap-2 shadow-lg">
+              <span>⚠️</span>
+              <span>{errorMessage}</span>
             </div>
-            <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-              <p class="text-xs uppercase font-bold text-slate-400">Regional Endpoints</p>
-              <p class="text-xl font-bold text-white mt-1">Sri Lanka & Dubai</p>
-              <p class="text-xs text-slate-400 mt-2">LK: +94 77 809 1278 | UAE: +971 54 771 5370</p>
+          )}
+
+          <!-- Studio Navigation Tabs Bar -->
+          <div class="flex items-center gap-2 border-b border-slate-800 pb-2 overflow-x-auto" id="studio-tabs">
+            <button type="button" data-tab="overview" class="tab-btn active px-4 py-2 rounded-2xl text-xs font-black uppercase tracking-wider bg-amber-500 text-[#081736] transition-all cursor-pointer">
+              📊 Overview & System
+            </button>
+            <button type="button" data-tab="create-blog" class="tab-btn px-4 py-2 rounded-2xl text-xs font-black uppercase tracking-wider text-slate-300 hover:text-white hover:bg-slate-800 transition-all cursor-pointer">
+              ✍️ Add New Blog Article
+            </button>
+            <button type="button" data-tab="manage-blogs" class="tab-btn px-4 py-2 rounded-2xl text-xs font-black uppercase tracking-wider text-slate-300 hover:text-white hover:bg-slate-800 transition-all cursor-pointer">
+              📝 Published Articles ({posts.length})
+            </button>
+            <button type="button" data-tab="services-guide" class="tab-btn px-4 py-2 rounded-2xl text-xs font-black uppercase tracking-wider text-slate-300 hover:text-white hover:bg-slate-800 transition-all cursor-pointer">
+              🛠️ Services & Offerings ({SERVICES.length})
+            </button>
+            <button type="button" data-tab="contacts" class="tab-btn px-4 py-2 rounded-2xl text-xs font-black uppercase tracking-wider text-slate-300 hover:text-white hover:bg-slate-800 transition-all cursor-pointer">
+              📞 WhatsApp Channels
+            </button>
+          </div>
+
+          <!-- TAB 1: OVERVIEW -->
+          <div id="tab-overview" class="tab-content space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              <div class="p-6 rounded-3xl bg-[#081736]/80 border border-amber-500/20 shadow-xl">
+                <span class="text-xs uppercase font-extrabold text-amber-400">Database Engine</span>
+                <p class="text-2xl font-black text-white mt-1">Cloudflare D1</p>
+                <p class="text-xs text-emerald-400 mt-2 font-mono">SQLite Edge Storage Active</p>
+              </div>
+              <div class="p-6 rounded-3xl bg-[#081736]/80 border border-amber-500/20 shadow-xl">
+                <span class="text-xs uppercase font-extrabold text-amber-400">Published Articles</span>
+                <p class="text-2xl font-black text-white mt-1">{posts.length} Guides</p>
+                <p class="text-xs text-sky-400 mt-2 font-mono">Auto-generated XML Sitemap</p>
+              </div>
+              <div class="p-6 rounded-3xl bg-[#081736]/80 border border-amber-500/20 shadow-xl">
+                <span class="text-xs uppercase font-extrabold text-amber-400">Core Services</span>
+                <p class="text-2xl font-black text-white mt-1">3 Disciplines</p>
+                <p class="text-xs text-amber-300 mt-2 font-mono">Website Dev (Primary), CV, Apps</p>
+              </div>
+              <div class="p-6 rounded-3xl bg-[#081736]/80 border border-amber-500/20 shadow-xl">
+                <span class="text-xs uppercase font-extrabold text-amber-400">Active Domains</span>
+                <p class="text-xl font-black text-white mt-1">hivesmartpro.com</p>
+                <p class="text-xs text-emerald-400 mt-2 font-mono">SSL & CDN Active</p>
+              </div>
+            </div>
+
+            <div class="p-6 sm:p-8 rounded-3xl bg-[#081736]/60 border border-slate-800">
+              <h2 class="text-xl font-black text-white mb-3">Quick Navigation & Operations</h2>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <button type="button" onclick="document.querySelector('[data-tab=create-blog]').click()" class="p-4 rounded-2xl bg-slate-900 border border-slate-800 hover:border-amber-500/50 text-left cursor-pointer transition-all">
+                  <span class="text-2xl block mb-2">✍️</span>
+                  <span class="text-sm font-bold text-white block">Create New Article</span>
+                  <span class="text-xs text-slate-400">Write and publish directly to the live blog</span>
+                </button>
+                <a href="/sitemap.xml" target="_blank" class="p-4 rounded-2xl bg-slate-900 border border-slate-800 hover:border-amber-500/50 text-left transition-all">
+                  <span class="text-2xl block mb-2">🗺️</span>
+                  <span class="text-sm font-bold text-white block">View Live Sitemap.xml</span>
+                  <span class="text-xs text-slate-400">Direct XML index for Google Search Console</span>
+                </a>
+                <a href="/services/" target="_blank" class="p-4 rounded-2xl bg-slate-900 border border-slate-800 hover:border-amber-500/50 text-left transition-all">
+                  <span class="text-2xl block mb-2">🌐</span>
+                  <span class="text-sm font-bold text-white block">View Public Services</span>
+                  <span class="text-xs text-slate-400">Review search filters and WhatsApp links</span>
+                </a>
+              </div>
             </div>
           </div>
 
-          <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-            <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-bold text-white">Published Articles & SEO Meta</h2>
-              <a href="/blog/" target="_blank" class="text-xs font-bold text-sky-400 hover:underline">
-                View Public Blog →
-              </a>
-            </div>
+          <!-- TAB 2: CREATE BLOG POST -->
+          <div id="tab-create-blog" class="tab-content hidden space-y-6">
+            <div class="p-6 sm:p-8 rounded-3xl bg-[#081736]/80 border-2 border-amber-500/30 shadow-2xl">
+              <div class="flex items-center justify-between mb-6">
+                <div>
+                  <h2 class="text-xl sm:text-2xl font-black text-white">Publish New Article or Technical Guide</h2>
+                  <p class="text-xs text-slate-400 mt-1">Articles are saved to Cloudflare D1 and immediately indexed with Article Schema.</p>
+                </div>
+                <span class="text-xs font-mono px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">
+                  Instant Publication
+                </span>
+              </div>
 
-            <div class="overflow-x-auto">
-              <table class="w-full text-left text-xs text-slate-300">
-                <thead class="bg-slate-800 text-slate-400 uppercase text-[10px] tracking-wider">
-                  <tr>
-                    <th class="p-3">Title</th>
-                    <th class="p-3">Category</th>
-                    <th class="p-3">Reading Time</th>
-                    <th class="p-3">Status</th>
-                    <th class="p-3">Action</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-800">
-                  {posts.map((post) => (
+              <form method="POST" class="space-y-6" id="create-post-form">
+                <input type="hidden" name="action" value="create_post" />
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label for="post-title" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                      Article Title *
+                    </label>
+                    <input
+                      type="text"
+                      id="post-title"
+                      name="title"
+                      required
+                      placeholder="e.g. 10 Essential Factors for High-Converting Websites in Dubai"
+                      class="w-full px-4 py-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 text-sm font-semibold"
+                    />
+                  </div>
+
+                  <div>
+                    <label for="post-slug" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                      URL Slug (Auto-generated) *
+                    </label>
+                    <div class="flex items-center rounded-2xl bg-slate-900 border border-slate-700 px-3">
+                      <span class="text-xs text-slate-500 font-mono">/blog/</span>
+                      <input
+                        type="text"
+                        id="post-slug"
+                        name="slug"
+                        placeholder="10-factors-high-converting-websites-dubai"
+                        class="w-full px-2 py-3.5 bg-transparent text-amber-300 placeholder-slate-600 focus:outline-none text-sm font-mono"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  <div>
+                    <label for="post-category" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                      Category
+                    </label>
+                    <select
+                      id="post-category"
+                      name="categoryName"
+                      class="w-full px-4 py-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-amber-400 text-sm"
+                    >
+                      <option value="Website Development">Website Development</option>
+                      <option value="CV Design">CV Design & ATS</option>
+                      <option value="Mobile Applications">Mobile Applications</option>
+                      <option value="Digital Strategy">Digital Strategy</option>
+                      <option value="Speed Optimization">Speed Optimization</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label for="post-author" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                      Author
+                    </label>
+                    <input
+                      type="text"
+                      id="post-author"
+                      name="author"
+                      value="HiveSmart Senior Technical Architect"
+                      class="w-full px-4 py-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label for="post-reading" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                      Estimated Reading Time (Minutes)
+                    </label>
+                    <input
+                      type="number"
+                      id="post-reading"
+                      name="readingTime"
+                      value="5"
+                      min="1"
+                      max="30"
+                      class="w-full px-4 py-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label for="post-desc" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                    Short Description / SEO Snippet *
+                  </label>
+                  <textarea
+                    id="post-desc"
+                    name="description"
+                    rows="2"
+                    required
+                    placeholder="A concise summary of the article that appears on Google and in preview cards..."
+                    class="w-full px-4 py-3 rounded-2xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 text-sm leading-relaxed"
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label for="post-content" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                    Full Article Content (Markdown / HTML Supported) *
+                  </label>
+                  <p class="text-[11px] text-slate-400 mb-2">
+                    Tip: Use <code class="text-amber-400 font-mono">## Heading 2</code>, <code class="text-amber-400 font-mono">### Heading 3</code>, and <code class="text-amber-400 font-mono">- Bullet points</code> for clean automatic styling.
+                  </p>
+                  <textarea
+                    id="post-content"
+                    name="content"
+                    rows="10"
+                    required
+                    placeholder="## Introduction&#10;&#10;Write your in-depth guide here...&#10;&#10;### Key Takeaways&#10;- Point 1&#10;- Point 2"
+                    class="w-full px-4 py-3.5 rounded-2xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 text-sm font-mono leading-relaxed"
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label for="post-tags" class="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                    Tags (Comma-separated)
+                  </label>
+                  <input
+                    type="text"
+                    id="post-tags"
+                    name="tags"
+                    placeholder="Web Development, Dubai, Sri Lanka, SEO, Speed"
+                    class="w-full px-4 py-3 rounded-2xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 text-sm"
+                  />
+                </div>
+
+                <div class="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+                  <button
+                    type="submit"
+                    class="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 hover:from-amber-300 hover:to-amber-500 text-[#081736] font-black text-sm transition-all shadow-xl shadow-amber-500/20 active:scale-95 cursor-pointer"
+                  >
+                    🚀 Publish Article to Live Site
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- TAB 3: MANAGE BLOGS -->
+          <div id="tab-manage-blogs" class="tab-content hidden space-y-6">
+            <div class="p-6 sm:p-8 rounded-3xl bg-[#081736]/80 border border-slate-800 shadow-2xl">
+              <div class="flex items-center justify-between mb-6">
+                <div>
+                  <h2 class="text-xl font-black text-white">Live Published Articles ({posts.length})</h2>
+                  <p class="text-xs text-slate-400">All articles are indexed, rendered with Article Schema, and include contextual WhatsApp conversion funnels.</p>
+                </div>
+                <button type="button" onclick="document.querySelector('[data-tab=create-blog]').click()" class="text-xs font-black px-4 py-2 rounded-xl bg-amber-500 text-[#081736] hover:bg-amber-400 transition-colors cursor-pointer">
+                  + Add New Post
+                </button>
+              </div>
+
+              <div class="overflow-x-auto rounded-2xl border border-slate-800">
+                <table class="w-full text-left text-xs text-slate-300">
+                  <thead class="bg-slate-900 text-slate-400 uppercase text-[10px] tracking-wider font-mono">
                     <tr>
-                      <td class="p-3 font-semibold text-white max-w-xs truncate">{post.title}</td>
-                      <td class="p-3 text-sky-400">{post.category.name}</td>
-                      <td class="p-3">{post.readingTime} min</td>
-                      <td class="p-3">
-                        <span class="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 font-semibold text-[10px]">
-                          Published
-                        </span>
-                      </td>
-                      <td class="p-3">
-                        <a href={`/blog/${post.slug}/`} target="_blank" class="text-sky-400 hover:underline font-bold">
-                          View
-                        </a>
-                      </td>
+                      <th class="p-4">Title & Slug</th>
+                      <th class="p-4">Category</th>
+                      <th class="p-4">Reading Time</th>
+                      <th class="p-4">Status</th>
+                      <th class="p-4 text-right">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800 bg-[#081736]/50">
+                    {posts.map((post) => (
+                      <tr class="hover:bg-slate-800/40 transition-colors">
+                        <td class="p-4">
+                          <p class="font-bold text-white max-w-md truncate">{post.title}</p>
+                          <p class="text-[11px] text-amber-400/80 font-mono mt-0.5">/blog/{post.slug}/</p>
+                        </td>
+                        <td class="p-4">
+                          <span class="px-2.5 py-1 rounded-full bg-slate-800 text-slate-200 border border-slate-700 text-[11px] font-semibold">
+                            {post.category.name}
+                          </span>
+                        </td>
+                        <td class="p-4 font-mono">{post.readingTime} min</td>
+                        <td class="p-4">
+                          <span class="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold text-[10px]">
+                            ● Published
+                          </span>
+                        </td>
+                        <td class="p-4 text-right space-x-2">
+                          <a
+                            href={`/blog/${post.slug}/`}
+                            target="_blank"
+                            class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-amber-500 hover:text-[#081736] text-amber-400 font-bold transition-all text-xs"
+                          >
+                            View ↗
+                          </a>
+                          <form method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this article?');">
+                            <input type="hidden" name="action" value="delete_post" />
+                            <input type="hidden" name="slug" value={post.slug} />
+                            <button
+                              type="submit"
+                              class="px-2.5 py-1.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 text-rose-300 font-bold transition-all text-xs cursor-pointer"
+                            >
+                              Delete
+                            </button>
+                          </form>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
 
-          <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-            <h2 class="text-xl font-bold text-white mb-4">Business Phone & Location Configuration</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-              <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700">
-                <p class="font-bold text-white">Sri Lanka Office</p>
-                <p class="text-xs text-slate-400 mt-1">Phone: {SITE_CONFIG.contacts.sriLanka.phoneDisplay}</p>
-                <p class="text-xs text-slate-400">Address: {SITE_CONFIG.contacts.sriLanka.fullAddress}</p>
-                <p class="text-xs text-emerald-400 mt-1">WhatsApp wa.me/{SITE_CONFIG.contacts.sriLanka.whatsappNumber}</p>
+          <!-- TAB 4: SERVICES MANAGEMENT & GUIDE -->
+          <div id="tab-services-guide" class="tab-content hidden space-y-6">
+            <div class="p-6 sm:p-8 rounded-3xl bg-[#081736]/80 border border-slate-800 shadow-2xl space-y-6">
+              <div>
+                <h2 class="text-xl font-black text-white">Configured Service Pillars & Solutions</h2>
+                <p class="text-xs text-slate-400 mt-1">Each service is defined with full SEO schemas, WhatsApp conversion funnels, and sub-services in <code class="text-amber-400">src/config/services.ts</code>.</p>
               </div>
-              <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700">
-                <p class="font-bold text-white">Dubai / UAE Office</p>
-                <p class="text-xs text-slate-400 mt-1">Phone: {SITE_CONFIG.contacts.dubai.phoneDisplay}</p>
-                <p class="text-xs text-slate-400">Address: {SITE_CONFIG.contacts.dubai.fullAddress}</p>
-                <p class="text-xs text-emerald-400 mt-1">WhatsApp wa.me/{SITE_CONFIG.contacts.dubai.whatsappNumber}</p>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {SERVICES.map((s) => (
+                  <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                      <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-mono font-bold text-amber-400 px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30">
+                          {s.badge}
+                        </span>
+                        <a href={`/services/${s.slug}/`} target="_blank" class="text-xs text-slate-400 hover:text-white">
+                          View Live ↗
+                        </a>
+                      </div>
+                      <h3 class="text-base font-bold text-white mb-1">{s.title}</h3>
+                      <p class="text-xs text-slate-400 mb-4 line-clamp-2">{s.shortDescription}</p>
+                      
+                      <div class="space-y-1">
+                        <p class="text-[11px] font-bold text-slate-300 uppercase">Sub-Services ({s.subServices.length}):</p>
+                        <ul class="text-xs text-slate-400 space-y-0.5">
+                          {s.subServices.slice(0, 4).map((sub) => (
+                            <li class="flex items-center gap-1.5">
+                              <span class="text-amber-400 text-[10px]">●</span>
+                              <span>{sub.title}</span>
+                            </li>
+                          ))}
+                          {s.subServices.length > 4 && (
+                            <li class="text-[11px] text-amber-400 font-mono">+ {s.subServices.length - 4} more</li>
+                          )}
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-800">
+                      <a
+                        href={`https://wa.me/94778091278?text=${encodeURIComponent(s.whatsappMessage)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="w-full block text-center py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30"
+                      >
+                        💬 Test WhatsApp Trigger
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <!-- How to Add New Custom Service Pages -->
+              <div class="p-6 rounded-2xl bg-slate-900/90 border border-amber-500/30">
+                <h3 class="text-base font-bold text-white mb-2">How to Add a New Service Page</h3>
+                <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                  To introduce a brand new major service (e.g. SEO & Digital Marketing, Cloud Hosting):
+                </p>
+                <ol class="list-decimal list-inside text-xs text-slate-400 space-y-1.5 font-mono">
+                  <li>Open <code class="text-amber-300">src/config/services.ts</code> and add a new entry to the <code class="text-amber-300">SERVICES</code> array.</li>
+                  <li>Create a new page file at <code class="text-amber-300">src/pages/services/[your-service-slug].astro</code>.</li>
+                  <li>Git commit and push to main—Cloudflare will automatically deploy your new service page with full SEO schemas within 40 seconds!</li>
+                </ol>
               </div>
             </div>
           </div>
+
+          <!-- TAB 5: REGIONAL CONTACTS -->
+          <div id="tab-contacts" class="tab-content hidden space-y-6">
+            <div class="p-6 sm:p-8 rounded-3xl bg-[#081736]/80 border border-slate-800 shadow-2xl">
+              <h2 class="text-xl font-black text-white mb-2">Regional WhatsApp & Contact Hubs</h2>
+              <p class="text-xs text-slate-400 mb-6">These numbers power the global floating button, headers, footers, and direct conversion triggers.</p>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Sri Lanka -->
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl">🇱🇰</span>
+                    <div>
+                      <h3 class="text-base font-bold text-white">Sri Lanka Headquarters</h3>
+                      <p class="text-xs text-slate-400">Serving South Asia & Global</p>
+                    </div>
+                  </div>
+                  <div class="text-xs space-y-1 text-slate-300 font-mono">
+                    <p>Phone: {SITE_CONFIG.contacts.sriLanka.phoneDisplay}</p>
+                    <p>WhatsApp: wa.me/{SITE_CONFIG.contacts.sriLanka.whatsappNumber}</p>
+                    <p>Location: {SITE_CONFIG.contacts.sriLanka.fullAddress}</p>
+                  </div>
+                  <a
+                    href="https://wa.me/94778091278"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs"
+                  >
+                    <span>💬 Test Sri Lanka WhatsApp</span>
+                  </a>
+                </div>
+
+                <!-- Dubai -->
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl">🇦🇪</span>
+                    <div>
+                      <h3 class="text-base font-bold text-white">Dubai / UAE Office</h3>
+                      <p class="text-xs text-slate-400">Serving UAE, GCC & Middle East</p>
+                    </div>
+                  </div>
+                  <div class="text-xs space-y-1 text-slate-300 font-mono">
+                    <p>Phone: {SITE_CONFIG.contacts.dubai.phoneDisplay}</p>
+                    <p>WhatsApp: wa.me/{SITE_CONFIG.contacts.dubai.whatsappNumber}</p>
+                    <p>Location: {SITE_CONFIG.contacts.dubai.fullAddress}</p>
+                  </div>
+                  <a
+                    href="https://wa.me/971547713570"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs"
+                  >
+                    <span>💬 Test Dubai WhatsApp</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </main>
       </div>
     )}
 
+    <!-- Interactive Tabs & Auto-Slug Script -->
+    <script>
+      function setupAdminUI() {
+        // Tab switching
+        const tabs = document.querySelectorAll('#studio-tabs .tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach((tab) => {
+          tab.addEventListener('click', () => {
+            const target = tab.getAttribute('data-tab');
+            if (!target) return;
+
+            tabs.forEach((t) => {
+              t.classList.remove('active', 'bg-amber-500', 'text-[#081736]');
+              t.classList.add('text-slate-300');
+            });
+            tab.classList.add('active', 'bg-amber-500', 'text-[#081736]');
+            tab.classList.remove('text-slate-300');
+
+            contents.forEach((c) => {
+              if (c.id === `tab-${target}`) {
+                c.classList.remove('hidden');
+              } else {
+                c.classList.add('hidden');
+              }
+            });
+          });
+        });
+
+        // Auto-slug generator on Title input
+        const titleInput = document.getElementById('post-title') as HTMLInputElement | null;
+        const slugInput = document.getElementById('post-slug') as HTMLInputElement | null;
+
+        titleInput?.addEventListener('input', () => {
+          if (slugInput && !slugInput.dataset.manual) {
+            slugInput.value = titleInput.value
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/^-|-$/g, '');
+          }
+        });
+
+        slugInput?.addEventListener('input', () => {
+          slugInput.dataset.manual = 'true';
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupAdminUI);
+      } else {
+        setupAdminUI();
+      }
+    </script>
   </body>
 </html>

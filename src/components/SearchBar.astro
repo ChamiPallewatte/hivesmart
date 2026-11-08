@@ -8,7 +8,7 @@ interface Props {
 
 const {
   initialValue = '',
-  placeholder = 'What digital solution are you looking for?',
+  placeholder = 'Search services, web solutions, mobile apps, CV design...',
   large = true,
   class: className = ''
 } = Astro.props;
@@ -16,26 +16,25 @@ const {
 // Quick suggested keywords for 1-click chip search
 const suggestedPills = [
   'Website Development',
-  'WordPress Development',
-  'Ecommerce Website',
-  'Business Website',
-  'CV Design',
-  'ATS Resume',
-  'Mobile Application',
-  'iOS & Android App'
+  'WordPress & WooCommerce',
+  'Ecommerce Stores',
+  'ATS Resume Design',
+  'Mobile Apps (Flutter/iOS)',
+  'Speed Optimization'
 ];
 ---
 
-<div class={`w-full max-w-3xl mx-auto relative ${className}`} id="search-component">
-  <form id="search-form" action="/services/" method="GET" class="relative group">
+<div class={`w-full max-w-4xl mx-auto relative ${className}`} id="search-component">
+  <form id="search-form" action="/services/" method="GET" class="relative group" role="search">
+    <!-- Main Glowing Glass Search Bar Container -->
     <div
-      class={`flex items-center w-full rounded-2xl bg-white dark:bg-[#0a1935] border-2 border-amber-500/30 dark:border-amber-500/40 hover:border-amber-500 focus-within:border-amber-500 focus-within:ring-4 focus-within:ring-amber-500/15 shadow-xl shadow-amber-900/5 transition-all duration-300 ${
-        large ? 'p-2 pl-4 md:pl-5' : 'p-1.5 pl-3'
+      class={`flex items-center w-full rounded-2xl md:rounded-3xl bg-[#081736]/90 backdrop-blur-2xl border-2 border-amber-500/30 hover:border-amber-500/60 focus-within:border-amber-400 focus-within:ring-4 focus-within:ring-amber-500/20 shadow-2xl shadow-amber-950/40 transition-all duration-300 ${
+        large ? 'p-2 pl-4 md:pl-6' : 'p-1.5 pl-3'
       }`}
     >
-      <!-- Search Glass Icon -->
-      <div class="text-amber-500 transition-colors mr-3 flex-shrink-0">
-        <svg class={`${large ? 'w-6 h-6' : 'w-5 h-5'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <!-- Search Glass Icon with subtle glow -->
+      <div class="text-amber-400 transition-transform duration-300 group-hover:scale-110 flex-shrink-0 mr-3">
+        <svg class={`${large ? 'w-6 h-6 md:w-7 md:h-7' : 'w-5 h-5'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
       </div>
@@ -49,19 +48,24 @@ const suggestedPills = [
         placeholder={placeholder}
         autocomplete="off"
         spellcheck="false"
-        class={`w-full bg-transparent text-[#081736] dark:text-white placeholder-slate-400 focus:outline-none ${
-          large ? 'text-base md:text-lg font-medium' : 'text-sm font-normal'
+        class={`w-full bg-transparent text-white placeholder-slate-400 focus:outline-none ${
+          large ? 'text-base md:text-xl font-medium tracking-tight' : 'text-sm font-normal'
         }`}
-        aria-label="Search Hive smart services and capabilities"
+        aria-label="Search HiveSmart services and digital solutions"
         aria-autocomplete="list"
-        aria-controls="search-suggestions-box"
+        aria-controls="search-spotlight-box"
       />
+
+      <!-- Keyboard shortcut pill hint -->
+      <div class="hidden sm:flex items-center gap-1 mr-2 px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700/60 text-[11px] font-mono font-semibold text-slate-400 select-none">
+        <span>⌘</span><span>K</span>
+      </div>
 
       <!-- Clear Button (hidden by default) -->
       <button
         type="button"
         id="search-clear-btn"
-        class="hidden text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 p-1 mr-1"
+        class="hidden text-slate-400 hover:text-amber-400 p-2 mr-1 transition-colors"
         aria-label="Clear search input"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,156 +77,465 @@ const suggestedPills = [
       <button
         type="submit"
         id="search-submit-btn"
-        class={`flex-shrink-0 inline-flex items-center justify-center font-bold text-white bg-[#081736] hover:bg-[#0f2752] border border-amber-500/40 active:scale-95 rounded-xl shadow-md transition-all duration-200 ${
-          large ? 'px-6 py-3.5 text-sm md:text-base' : 'px-4 py-2 text-sm'
+        class={`flex-shrink-0 inline-flex items-center justify-center font-black text-[#081736] bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 hover:from-amber-300 hover:to-amber-500 active:scale-95 rounded-xl md:rounded-2xl shadow-lg shadow-amber-500/20 transition-all duration-200 cursor-pointer ${
+          large ? 'px-6 md:px-8 py-3.5 md:py-4 text-sm md:text-base' : 'px-4 py-2 text-sm'
         }`}
         aria-label="Execute search"
       >
         <span>Search</span>
-        <svg class="w-4 h-4 ml-1.5 hidden md:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        <svg class="w-4 h-4 ml-1.5 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
         </svg>
       </button>
     </div>
 
-    <!-- Live Auto-Suggest Dropdown Box -->
+    <!-- Live Spotlight Search Result Popover Dropdown -->
     <div
-      id="search-suggestions-box"
-      class="hidden absolute left-0 right-0 top-full mt-2 z-40 bg-white/95 dark:bg-[#0a1935]/98 backdrop-blur-xl rounded-2xl border border-amber-500/30 dark:border-amber-500/40 shadow-2xl p-2 max-h-80 overflow-y-auto"
+      id="search-spotlight-box"
+      class="hidden absolute left-0 right-0 top-full mt-3 z-50 rounded-3xl bg-[#081736]/95 backdrop-blur-2xl border-2 border-amber-500/40 shadow-2xl shadow-black/80 overflow-hidden transition-all duration-200 text-left"
       role="listbox"
     >
-      <div class="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-        Suggested Services
+      <!-- Filter Category Tabs Header inside Search Box -->
+      <div class="px-5 pt-4 pb-3 border-b border-slate-800/80 flex items-center justify-between flex-wrap gap-2">
+        <div class="flex items-center gap-1.5" id="search-filter-tabs">
+          <button type="button" data-filter="all" class="search-tab-btn active px-3 py-1 rounded-full text-xs font-bold bg-amber-500 text-[#081736] transition-all">
+            All Results
+          </button>
+          <button type="button" data-filter="web" class="search-tab-btn px-3 py-1 rounded-full text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all">
+            Web Dev
+          </button>
+          <button type="button" data-filter="cv" class="search-tab-btn px-3 py-1 rounded-full text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all">
+            CV Design
+          </button>
+          <button type="button" data-filter="app" class="search-tab-btn px-3 py-1 rounded-full text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all">
+            Mobile Apps
+          </button>
+          <button type="button" data-filter="blog" class="search-tab-btn px-3 py-1 rounded-full text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all">
+            Guides
+          </button>
+        </div>
+        <span class="text-[11px] font-mono text-amber-400/80 hidden sm:inline" id="search-results-counter">
+          Ready
+        </span>
       </div>
-      <ul id="suggestions-list" class="space-y-1"></ul>
+
+      <!-- Scrollable Results Container -->
+      <div class="max-h-[420px] overflow-y-auto p-3 space-y-1.5" id="search-results-scroll">
+        <ul id="spotlight-results-list" class="space-y-1.5"></ul>
+      </div>
+
+      <!-- Quick Action Footer: WhatsApp Instant Contact -->
+      <div class="px-5 py-3 bg-[#050e22]/90 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Need custom assistance?</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <a
+            href="https://wa.me/94778091278?text=Hi%20HiveSmart%2C%20I'm%20looking%20for%20a%20digital%20solution."
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-emerald-400 hover:text-emerald-300 font-bold inline-flex items-center gap-1 transition-colors"
+          >
+            <span>🇱🇰 LK WhatsApp</span>
+          </a>
+          <span class="text-slate-600">|</span>
+          <a
+            href="https://wa.me/971547713570?text=Hi%20HiveSmart%2C%20I'm%20looking%20for%20a%20digital%20solution."
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-amber-400 hover:text-amber-300 font-bold inline-flex items-center gap-1 transition-colors"
+          >
+            <span>🇦🇪 Dubai WhatsApp</span>
+          </a>
+        </div>
+      </div>
     </div>
   </form>
 
-  <!-- Quick Selection Pills -->
+  <!-- Popular / Trending Pills -->
   {large && (
     <div class="mt-4 flex flex-wrap items-center justify-center gap-2 select-none">
-      <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">Popular:</span>
+      <span class="text-xs font-bold text-amber-500/90 uppercase tracking-wider">Popular Searches:</span>
       {suggestedPills.map((pill) => (
-        <a
-          href={`/services/?q=${encodeURIComponent(pill)}`}
-          class="text-xs px-3 py-1 rounded-full bg-white dark:bg-[#081736] border border-amber-500/30 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40 text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
-          data-pill-search
+        <button
+          type="button"
+          data-keyword={pill}
+          class="trending-search-pill text-xs px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-amber-500/20 hover:border-amber-500/60 hover:bg-amber-500/10 text-slate-200 hover:text-amber-300 transition-all cursor-pointer font-medium"
         >
           {pill}
-        </a>
+        </button>
       ))}
     </div>
   )}
 </div>
 
 <script>
-  import { trackEvent } from '../lib/analytics/events';
+  interface SearchItem {
+    id: string;
+    title: string;
+    desc: string;
+    type: 'web' | 'cv' | 'app' | 'blog' | 'action';
+    badge: string;
+    badgeColor: string;
+    url: string;
+    icon: string;
+    keywords: string[];
+    waUrl?: string;
+  }
 
-  const searchableKeywords = [
-    { label: 'Website Development', slug: 'website-development', query: 'website-development', cat: 'Primary Service' },
-    { label: 'WordPress Website Development', slug: 'website-development', query: 'wordpress development', cat: 'Website Development' },
-    { label: 'Ecommerce Website Development', slug: 'website-development', query: 'ecommerce website', cat: 'Website Development' },
-    { label: 'Business Website Development', slug: 'website-development', query: 'business website', cat: 'Website Development' },
-    { label: 'Website Speed Optimization', slug: 'website-development', query: 'speed optimization', cat: 'Website Development' },
-    { label: 'Landing Page Development', slug: 'website-development', query: 'landing page', cat: 'Website Development' },
-    { label: 'Professional CV Design', slug: 'cv-design', query: 'cv design', cat: 'CV Design' },
-    { label: 'ATS-Friendly CV Formatting', slug: 'cv-design', query: 'ats friendly cv', cat: 'CV Design' },
-    { label: 'Executive Resume Design', slug: 'cv-design', query: 'resume design', cat: 'CV Design' },
-    { label: 'Mobile Application Development', slug: 'mobile-app-development', query: 'mobile application', cat: 'Mobile Apps' },
-    { label: 'Android App Development', slug: 'mobile-app-development', query: 'android app', cat: 'Mobile Apps' },
-    { label: 'iOS / iPhone App Development', slug: 'mobile-app-development', query: 'ios app', cat: 'Mobile Apps' },
-    { label: 'Cross-Platform App (Flutter)', slug: 'mobile-app-development', query: 'cross-platform', cat: 'Mobile Apps' }
+  const SEARCH_ITEMS: SearchItem[] = [
+    // Web Development
+    {
+      id: 'web-main',
+      title: 'Website Development (Primary Service)',
+      desc: 'High-speed, custom-engineered business websites with sub-second loading speeds on Cloudflare.',
+      type: 'web',
+      badge: 'Primary Core Service',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      url: '/services/website-development/',
+      icon: '🌐',
+      keywords: ['website development', 'web design', 'web development sri lanka', 'web developer dubai', 'website'],
+      waUrl: 'https://wa.me/94778091278?text=Hi%20HiveSmart%2C%20I%20am%20interested%20in%20Website%20Development.'
+    },
+    {
+      id: 'web-wp',
+      title: 'WordPress & WooCommerce Development',
+      desc: 'Bespoke custom WordPress themes, WooCommerce stores, and speed optimization without bloat.',
+      type: 'web',
+      badge: 'WordPress Specialist',
+      badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/40',
+      url: '/services/website-development/',
+      icon: '⚙️',
+      keywords: ['wordpress', 'woocommerce', 'ecommerce', 'online store', 'custom theme', 'wp developer'],
+      waUrl: 'https://wa.me/94778091278?text=Hi%20HiveSmart%2C%20I%20need%20a%20WordPress%20or%20WooCommerce%20website.'
+    },
+    {
+      id: 'web-ecom',
+      title: 'Custom Ecommerce Website Development',
+      desc: 'High-converting online store with payment gateways (Stripe, PayHere, UAE Telr) and instant WhatsApp ordering.',
+      type: 'web',
+      badge: 'High Conversion',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+      url: '/services/website-development/',
+      icon: '🛍️',
+      keywords: ['ecommerce', 'online shop', 'e-commerce', 'shopping cart', 'payment gateway', 'store'],
+      waUrl: 'https://wa.me/94778091278?text=Hi%20HiveSmart%2C%20I%20need%20an%20Ecommerce%20store.'
+    },
+    {
+      id: 'web-landing',
+      title: 'High-Converting Landing Pages',
+      desc: 'Sleek, direct-response landing pages tailored for Google Ads and Facebook marketing campaigns.',
+      type: 'web',
+      badge: 'Lead Funnel',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      url: '/services/website-development/',
+      icon: '🎯',
+      keywords: ['landing page', 'lead generation', 'sales funnel', 'single page website', 'marketing'],
+      waUrl: 'https://wa.me/94778091278?text=Hi%20HiveSmart%2C%20I%20need%20a%20high-converting%20Landing%20Page.'
+    },
+    {
+      id: 'web-speed',
+      title: 'Website Speed & Core Web Vitals Optimization',
+      desc: 'Turn a slow website into a sub-second performer with 95+ PageSpeed scores and top Google ranking.',
+      type: 'web',
+      badge: 'Speed Boost',
+      badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
+      url: '/services/website-development/',
+      icon: '⚡',
+      keywords: ['speed optimization', 'core web vitals', 'pagespeed', 'slow website', 'performance'],
+      waUrl: 'https://wa.me/94778091278?text=Hi%20HiveSmart%2C%20I%20want%20to%20optimize%20my%20website%20speed.'
+    },
+
+    // CV Design
+    {
+      id: 'cv-ats',
+      title: 'ATS-Friendly Professional CV Design',
+      desc: 'Engineered specifically to pass Applicant Tracking Systems for high-demand Dubai & European jobs.',
+      type: 'cv',
+      badge: 'ATS Guaranteed',
+      badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+      url: '/services/cv-design/',
+      icon: '📄',
+      keywords: ['cv design', 'ats resume', 'resume design', 'ats cv', 'curriculum vitae', 'dubai jobs cv'],
+      waUrl: 'https://wa.me/94778091278?text=Hi%20HiveSmart%2C%20I%20need%20an%20ATS-Friendly%20CV%20Design.'
+    },
+    {
+      id: 'cv-exec',
+      title: 'Executive & C-Level Resume Redesign',
+      desc: 'Prestigious, modern resume layout and typography highlighting executive leadership achievements.',
+      type: 'cv',
+      badge: 'Executive Tier',
+      badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+      url: '/services/cv-design/',
+      icon: '👔',
+      keywords: ['executive resume', 'senior resume', 'c-level cv', 'professional cv', 'manager cv'],
+      waUrl: 'https://wa.me/971547713570?text=Hi%20HiveSmart%2C%20I%20need%20an%20Executive%20Resume%20Design.'
+    },
+
+    // Mobile Applications
+    {
+      id: 'app-main',
+      title: 'Custom Mobile Application Development',
+      desc: 'Cross-platform iOS & Android mobile apps built on Flutter & React Native with backend API integration.',
+      type: 'app',
+      badge: 'iOS & Android',
+      badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
+      url: '/services/mobile-app-development/',
+      icon: '📱',
+      keywords: ['mobile app', 'flutter app', 'android app', 'ios app', 'mobile development', 'app developer'],
+      waUrl: 'https://wa.me/94778091278?text=Hi%20HiveSmart%2C%20I%20am%20planning%20a%20Mobile%20App%20project.'
+    },
+    {
+      id: 'app-flutter',
+      title: 'Cross-Platform Flutter Mobile Apps',
+      desc: 'Single codebase for both Apple App Store and Google Play Store with native 60fps performance.',
+      type: 'app',
+      badge: 'Flutter & Dart',
+      badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
+      url: '/services/mobile-app-development/',
+      icon: '🚀',
+      keywords: ['flutter', 'cross platform', 'hybrid app', 'google play', 'app store'],
+      waUrl: 'https://wa.me/94778091278?text=Hi%20HiveSmart%2C%20I%20want%20a%20Flutter%20mobile%20app.'
+    },
+
+    // Blog Articles & Guides
+    {
+      id: 'blog-1',
+      title: 'Custom Website Development Guide 2026',
+      desc: 'Why modern businesses outperform generic templates and how Cloudflare edge delivers 0.3s loads.',
+      type: 'blog',
+      badge: 'Engineering Guide',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+      url: '/blog/custom-website-development-guide-business-growth/',
+      icon: '📖',
+      keywords: ['website guide', 'business growth', 'custom web vs template', 'edge speed']
+    },
+    {
+      id: 'blog-2',
+      title: 'Web Development: Sri Lanka vs Dubai Market Insights',
+      desc: 'Navigating pricing, engineering quality, multilingual requirements, and WhatsApp lead funnels in UAE.',
+      type: 'blog',
+      badge: 'Market Strategy',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      url: '/blog/web-development-sri-lanka-vs-dubai-market-insights/',
+      icon: '🏙️',
+      keywords: ['dubai web development', 'sri lanka vs dubai', 'uae pricing', 'market insights']
+    },
+    {
+      id: 'blog-3',
+      title: 'ATS-Friendly CV Design for Dubai & International Jobs',
+      desc: 'Essential formatting rules to bypass candidate filters in UAE, Qatar, UK, and European corporate recruiting.',
+      type: 'blog',
+      badge: 'Career Guide',
+      badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+      url: '/blog/ats-friendly-cv-design-dubai-international-jobs/',
+      icon: '💼',
+      keywords: ['dubai cv format', 'ats resume guide', 'jobs in uae', 'cv tips']
+    }
   ];
 
-  function initSearchBar() {
+  function initSpotlightSearch() {
     const input = document.getElementById('search-input') as HTMLInputElement | null;
     const form = document.getElementById('search-form') as HTMLFormElement | null;
-    const suggestionsBox = document.getElementById('search-suggestions-box');
-    const list = document.getElementById('suggestions-list');
+    const box = document.getElementById('search-spotlight-box');
+    const list = document.getElementById('spotlight-results-list');
+    const counter = document.getElementById('search-results-counter');
     const clearBtn = document.getElementById('search-clear-btn');
+    const tabBtns = document.querySelectorAll('.search-tab-btn');
+    const trendingPills = document.querySelectorAll('.trending-search-pill');
 
-    if (!input || !form || !suggestionsBox || !list) return;
+    if (!input || !form || !box || !list) return;
 
-    function renderSuggestions(val: string) {
-      const q = val.toLowerCase().trim();
-      if (!q) {
-        suggestionsBox?.classList.add('hidden');
-        clearBtn?.classList.add('hidden');
-        return;
-      }
+    let currentFilter: string = 'all';
 
-      clearBtn?.classList.remove('hidden');
-
-      const matches = searchableKeywords.filter(
-        (item) => item.label.toLowerCase().includes(q) || item.cat.toLowerCase().includes(q) || item.query.toLowerCase().includes(q)
-      );
-
-      if (matches.length === 0) {
-        list!.innerHTML = `
-          <li class="px-3 py-3 text-xs text-slate-500 dark:text-slate-400 text-center">
-            Press Enter to search all services for <span class="font-bold text-slate-700 dark:text-slate-200">"${val}"</span>
-          </li>
-        `;
-        suggestionsBox?.classList.remove('hidden');
-        return;
-      }
-
-      list!.innerHTML = matches
-        .map(
-          (m) => `
-        <li>
-          <a
-            href="/services/?q=${encodeURIComponent(m.query)}"
-            class="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-amber-50 dark:hover:bg-slate-800 transition-colors group"
-          >
-            <div class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-              <span class="text-sm font-medium text-slate-800 dark:text-slate-200 group-hover:text-amber-600 transition-colors">${m.label}</span>
-            </div>
-            <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-950/60">${m.cat}</span>
-          </a>
-        </li>
-      `
-        )
-        .join('');
-
-      suggestionsBox?.classList.remove('hidden');
+    function highlightMatch(text: string, query: string): string {
+      if (!query) return text;
+      const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      return text.replace(regex, '<span class="search-highlight">$1</span>');
     }
 
+    function renderResults(query: string = '') {
+      const q = query.trim().toLowerCase();
+
+      let items = SEARCH_ITEMS;
+
+      // Filter by category tab
+      if (currentFilter !== 'all') {
+        items = items.filter((item) => item.type === currentFilter);
+      }
+
+      // Filter by text query
+      if (q) {
+        items = items.filter((item) => {
+          const matchTitle = item.title.toLowerCase().includes(q);
+          const matchDesc = item.desc.toLowerCase().includes(q);
+          const matchKeywords = item.keywords.some((k) => k.toLowerCase().includes(q));
+          return matchTitle || matchDesc || matchKeywords;
+        });
+      }
+
+      if (counter) {
+        counter.textContent = `${items.length} ${items.length === 1 ? 'solution' : 'solutions'}`;
+      }
+
+      if (items.length === 0) {
+        list!.innerHTML = `
+          <li class="py-8 text-center px-4">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center mx-auto text-2xl mb-3">
+              🔍
+            </div>
+            <p class="text-sm font-bold text-white mb-1">No exact solution matches "${query}"</p>
+            <p class="text-xs text-slate-400 mb-4 max-w-sm mx-auto">
+              We engineer custom solutions for unique business needs. Chat with our engineers directly on WhatsApp:
+            </p>
+            <a
+              href="https://wa.me/94778091278?text=Hi%20HiveSmart%2C%20I'm%20looking%20for%20a%20solution%20for%3A%20${encodeURIComponent(query)}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-md"
+            >
+              <span>💬 Ask Our Engineers on WhatsApp</span>
+            </a>
+          </li>
+        `;
+        box?.classList.remove('hidden');
+        return;
+      }
+
+      list!.innerHTML = items
+        .map((item, idx) => {
+          const highlightedTitle = highlightMatch(item.title, q);
+          const highlightedDesc = highlightMatch(item.desc, q);
+
+          return `
+            <li class="group/item rounded-2xl bg-slate-900/60 hover:bg-amber-500/10 border border-slate-800/80 hover:border-amber-500/40 p-3.5 transition-all duration-200" data-index="${idx}">
+              <div class="flex items-start justify-between gap-3">
+                <a href="${item.url}" class="flex items-start gap-3.5 flex-1 focus:outline-none">
+                  <div class="w-10 h-10 rounded-xl bg-[#081736] border border-amber-500/30 flex items-center justify-center text-xl flex-shrink-0 group-hover/item:scale-110 transition-transform">
+                    ${item.icon}
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                      <h4 class="text-sm font-bold text-white group-hover/item:text-amber-300 transition-colors">
+                        ${highlightedTitle}
+                      </h4>
+                      <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border ${item.badgeColor}">
+                        ${item.badge}
+                      </span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">
+                      ${highlightedDesc}
+                    </p>
+                  </div>
+                </a>
+
+                <div class="flex items-center gap-2 flex-shrink-0 self-center">
+                  ${
+                    item.waUrl
+                      ? `
+                    <a
+                      href="${item.waUrl}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Quick WhatsApp Inquiry"
+                      class="p-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 transition-all text-xs font-bold inline-flex items-center gap-1"
+                    >
+                      <span>💬 Chat</span>
+                    </a>
+                  `
+                      : ''
+                  }
+                  <a
+                    href="${item.url}"
+                    class="p-2 rounded-xl bg-slate-800 hover:bg-amber-500 hover:text-[#081736] text-amber-400 border border-slate-700 hover:border-amber-400 transition-all text-xs font-bold inline-flex items-center"
+                    aria-label="View solution details"
+                  >
+                    <span>View →</span>
+                  </a>
+                </div>
+              </div>
+            </li>
+          `;
+        })
+        .join('');
+
+      box?.classList.remove('hidden');
+    }
+
+    // Input events
     input.addEventListener('input', (e) => {
-      renderSuggestions((e.target as HTMLInputElement).value);
+      const val = (e.target as HTMLInputElement).value;
+      if (val.trim()) {
+        clearBtn?.classList.remove('hidden');
+      } else {
+        clearBtn?.classList.add('hidden');
+      }
+      renderResults(val);
+    });
+
+    input.addEventListener('focus', () => {
+      renderResults(input.value);
     });
 
     clearBtn?.addEventListener('click', () => {
       input.value = '';
-      suggestionsBox?.classList.add('hidden');
-      clearBtn?.classList.add('hidden');
+      clearBtn.classList.add('hidden');
+      renderResults('');
       input.focus();
     });
 
-    form.addEventListener('submit', (e) => {
-      const q = input.value.trim();
-      if (!q) {
+    // Category Tabs
+    tabBtns.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
         e.preventDefault();
-        input.focus();
-        return;
-      }
-
-      trackEvent('internal_search', { query: q });
+        e.stopPropagation();
+        tabBtns.forEach((b) => {
+          b.classList.remove('active', 'bg-amber-500', 'text-[#081736]', 'font-bold');
+          b.classList.add('text-slate-300', 'font-semibold');
+        });
+        const targetBtn = e.currentTarget as HTMLButtonElement;
+        targetBtn.classList.add('active', 'bg-amber-500', 'text-[#081736]', 'font-bold');
+        targetBtn.classList.remove('text-slate-300');
+        currentFilter = targetBtn.getAttribute('data-filter') || 'all';
+        renderResults(input.value);
+      });
     });
 
+    // Trending Search Pills
+    trendingPills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        const kw = pill.getAttribute('data-keyword') || '';
+        input.value = kw;
+        clearBtn?.classList.remove('hidden');
+        renderResults(kw);
+        input.focus();
+      });
+    });
+
+    // Close when clicking outside
     document.addEventListener('click', (e) => {
       if (!form.contains(e.target as Node)) {
-        suggestionsBox?.classList.add('hidden');
+        box?.classList.add('hidden');
+      }
+    });
+
+    // Keyboard shortcut (⌘K or Ctrl+K or /)
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        input.focus();
+        input.select();
+        renderResults(input.value);
+      } else if (e.key === 'Escape') {
+        box?.classList.add('hidden');
       }
     });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSearchBar);
+    document.addEventListener('DOMContentLoaded', initSpotlightSearch);
   } else {
-    initSearchBar();
+    initSpotlightSearch();
   }
 </script>

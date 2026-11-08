@@ -8,7 +8,8 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-# Sitemap location
+# Sitemap locations
+Sitemap: ${SITE_CONFIG.url}/sitemap.xml
 Sitemap: ${SITE_CONFIG.url}/sitemap-index.xml
 `.trim();
 
