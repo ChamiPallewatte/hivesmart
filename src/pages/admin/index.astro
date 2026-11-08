@@ -7,10 +7,9 @@ import '../../styles/global.css';
 
 export const prerender = false;
 
-// Basic admin authentication session simulation via Cookie / Secret Key
+// Standard Astro cookie management
 const adminSecret = import.meta.env.ADMIN_SECRET_KEY || 'default_admin_key';
-const cookies = Astro.request.headers.get('cookie') || '';
-let isAuthenticated = cookies.includes(`hivesmart_admin_auth=${adminSecret}`);
+let isAuthenticated = Astro.cookies.get('hivesmart_admin_auth')?.value === adminSecret;
 
 let errorMessage = '';
 let successMessage = '';
@@ -28,19 +27,20 @@ if (Astro.request.method === 'POST') {
 
       if (password === expectedPassword) {
         isAuthenticated = true;
-        Astro.response.headers.set(
-          'Set-Cookie',
-          `hivesmart_admin_auth=${adminSecret}; HttpOnly; Path=/admin; SameSite=Strict; Max-Age=86400`
-        );
+        Astro.cookies.set('hivesmart_admin_auth', adminSecret, {
+          httpOnly: true,
+          path: '/admin',
+          sameSite: 'strict',
+          maxAge: 86400
+        });
       } else {
         errorMessage = 'Invalid administrative password. Try hivesmart2026';
       }
     } else if (action === 'logout') {
       isAuthenticated = false;
-      Astro.response.headers.set(
-        'Set-Cookie',
-        `hivesmart_admin_auth=; HttpOnly; Path=/admin; SameSite=Strict; Max-Age=0`
-      );
+      Astro.cookies.delete('hivesmart_admin_auth', {
+        path: '/admin'
+      });
     } else if (action === 'create_post' && isAuthenticated) {
       const title = String(formData.get('title') || '').trim();
       let slug = String(formData.get('slug') || '').trim();
