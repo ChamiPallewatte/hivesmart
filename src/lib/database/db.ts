@@ -1,125 +1,9 @@
 /**
- * Cloudflare D1 Database & Prisma ORM Interface
- * Handles runtime D1 bindings, migrations, and static fallback.
+ * Cloudflare D1 Database Direct Interface
+ * Ultra-fast, zero-overhead edge SQLite queries with safe fallback.
  */
 
-import { PrismaClient } from '@prisma/client';
-import { PrismaD1 } from '@prisma/adapter-d1';
-import { getAllPosts, getPostBySlug, type StaticBlogPost } from './initial-posts';
-
-let prismaInstance: PrismaClient | null = null;
-
-export function getPrismaClient(d1Binding?: any): PrismaClient | null {
-  if (prismaInstance) return prismaInstance;
-
-  if (d1Binding) {
-    try {
-      const adapter = new PrismaD1(d1Binding);
-      prismaInstance = new PrismaClient({ adapter });
-      return prismaInstance;
-    } catch (err) {
-      console.error('[HiveSmart DB] Error initializing Prisma D1 adapter:', err);
-    }
-  }
-
-  return null;
-}
-
-/**
- * High-level Blog Service
- * Transparently queries Cloudflare D1 if available, otherwise falls back
- * to high-performance pre-compiled static post records.
- */
-export async function getBlogArticles(d1Binding?: any): Promise<StaticBlogPost[]> {
-  const db = getPrismaClient(d1Binding);
-
-  if (db) {
-    try {
-      const posts = await db.blogPost.findMany({
-        where: { published: true },
-        include: {
-          category: true,
-          tags: {
-            include: { tag: true }
-          }
-        },
-        orderBy: { publishedAt: 'desc' }
-      });
-
-      if (posts && posts.length > 0) {
-        return posts.map((p) => ({
-          id: p.id,
-          slug: p.slug,
-          title: p.title,
-          description: p.description,
-          content: p.content,
-          featuredImage: p.featuredImage || '/images/blog/custom-web-dev.svg',
-          author: p.author,
-          readingTime: p.readingTime,
-          published: p.published,
-          publishedAt: p.publishedAt.toISOString(),
-          updatedAt: p.updatedAt.toISOString(),
-          seoTitle: p.seoTitle || p.title,
-          seoDescription: p.seoDescription || p.description,
-          category: {
-            name: p.category?.name || 'General',
-            slug: p.category?.slug || 'general'
-          },
-          tags: p.tags.map((t) => t.tag.name)
-        }));
-      }
-    } catch (err) {
-      console.warn('[HiveSmart DB] D1 query failed, using static fallback:', err);
-    }
-  }
-
-  return getAllPosts();
-}
-
-export async function getBlogArticleBySlug(slug: string, d1Binding?: any): Promise<StaticBlogPost | undefined> {
-  const db = getPrismaClient(d1Binding);
-
-  if (db) {
-    try {
-      const p = await db.blogPost.findUnique({
-        where: { slug },
-        include: {
-          category: true,
-          tags: {
-            include: { tag: true }
-          }
-        }
-      });
-
-      if (p) {
-        return {
-          id: p.id,
-          slug: p.slug,
-          title: p.title,
-          description: p.description,
-          content: p.content,
-          featuredImage: p.featuredImage || '/images/blog/custom-web-dev.svg',
-          author: p.author,
-          readingTime: p.readingTime,
-          published: p.published,
-          publishedAt: p.publishedAt.toISOString(),
-          updatedAt: p.updatedAt.toISOString(),
-          seoTitle: p.seoTitle || p.title,
-          seoDescription: p.seoDescription || p.description,
-          category: {
-            name: p.category?.name || 'General',
-            slug: p.category?.slug || 'general'
-          },
-          tags: p.tags.map((t) => t.tag.name)
-        };
-      }
-    } catch (err) {
-      console.warn(`[HiveSmart DB] D1 query for slug '${slug}' failed:`, err);
-    }
-  }
-
-  return getPostBySlug(slug);
-}
+import { getAllPosts, getPostBySlug, INITIAL_BLOG_POSTS, type StaticBlogPost } from './initial-posts';
 
 export interface NewPostPayload {
   title: string;
@@ -135,7 +19,119 @@ export interface NewPostPayload {
 }
 
 /**
- * Creates and persists a new blog post into Cloudflare D1 or in-memory fallback.
+ * Retrieve blog articles from Cloudflare D1 with instant fallback to static articles.
+ */
+export async function getBlogArticles(d1Binding?: any): Promise<StaticBlogPost[]> {
+  if (d1Binding && typeof d1Binding.prepare === 'function') {
+    try {
+      // Ensure BlogPost table exists in D1
+      await d1Binding
+        .prepare(
+          `CREATE TABLE IF NOT EXISTS BlogPost (
+            id TEXT PRIMARY KEY,
+            slug TEXT UNIQUE,
+            title TEXT,
+            description TEXT,
+            content TEXT,
+            featuredImage TEXT,
+            author TEXT,
+            readingTime INTEGER,
+            published INTEGER DEFAULT 1,
+            publishedAt TEXT,
+            updatedAt TEXT,
+            seoTitle TEXT,
+            seoDescription TEXT,
+            categoryName TEXT
+          )`
+        )
+        .run();
+
+      const result = await d1Binding
+        .prepare('SELECT * FROM BlogPost ORDER BY publishedAt DESC')
+        .all();
+
+      if (result && result.results && result.results.length > 0) {
+        const d1Posts: StaticBlogPost[] = result.results.map((r: any) => ({
+          id: r.id,
+          slug: r.slug,
+          title: r.title,
+          description: r.description,
+          content: r.content,
+          featuredImage: r.featuredImage || '/images/blog/custom-web-dev.svg',
+          author: r.author || 'HiveSmart Team',
+          readingTime: Number(r.readingTime) || 5,
+          published: Boolean(r.published),
+          publishedAt: r.publishedAt || new Date().toISOString(),
+          updatedAt: r.updatedAt || new Date().toISOString(),
+          seoTitle: r.seoTitle || r.title,
+          seoDescription: r.seoDescription || r.description,
+          category: {
+            name: r.categoryName || 'Website Development',
+            slug: (r.categoryName || 'website-development').toLowerCase().replace(/[^a-z0-9]+/g, '-')
+          },
+          tags: []
+        }));
+
+        // Merge with initial posts if not already present
+        const combined = [...d1Posts];
+        for (const staticP of INITIAL_BLOG_POSTS) {
+          if (!combined.some((p) => p.slug === staticP.slug)) {
+            combined.push(staticP);
+          }
+        }
+        return combined;
+      }
+    } catch (err) {
+      console.warn('[HiveSmart DB] D1 query warning, using static fallback:', err);
+    }
+  }
+
+  return getAllPosts();
+}
+
+/**
+ * Retrieve a single blog article by slug
+ */
+export async function getBlogArticleBySlug(slug: string, d1Binding?: any): Promise<StaticBlogPost | undefined> {
+  if (d1Binding && typeof d1Binding.prepare === 'function') {
+    try {
+      const row = await d1Binding
+        .prepare('SELECT * FROM BlogPost WHERE slug = ? LIMIT 1')
+        .bind(slug)
+        .first();
+
+      if (row) {
+        return {
+          id: row.id,
+          slug: row.slug,
+          title: row.title,
+          description: row.description,
+          content: row.content,
+          featuredImage: row.featuredImage || '/images/blog/custom-web-dev.svg',
+          author: row.author || 'HiveSmart Team',
+          readingTime: Number(row.readingTime) || 5,
+          published: Boolean(row.published),
+          publishedAt: row.publishedAt || new Date().toISOString(),
+          updatedAt: row.updatedAt || new Date().toISOString(),
+          seoTitle: row.seoTitle || row.title,
+          seoDescription: row.seoDescription || row.description,
+          category: {
+            name: row.categoryName || 'Website Development',
+            slug: (row.categoryName || 'website-development').toLowerCase().replace(/[^a-z0-9]+/g, '-')
+          },
+          tags: []
+        };
+      }
+    } catch (err) {
+      console.warn(`[HiveSmart DB] D1 lookup for '${slug}' warning:`, err);
+    }
+  }
+
+  return getPostBySlug(slug);
+}
+
+/**
+ * Creates and persists a new blog post into Cloudflare D1 and runtime memory.
  */
 export async function createBlogPost(data: NewPostPayload, d1Binding?: any): Promise<StaticBlogPost> {
   const author = data.author?.trim() || 'HiveSmart Team';
@@ -145,30 +141,33 @@ export async function createBlogPost(data: NewPostPayload, d1Binding?: any): Pro
   const seoTitle = data.seoTitle?.trim() || data.title;
   const seoDescription = data.seoDescription?.trim() || data.description;
 
-  // Try direct D1 insertion if runtime binding is available
   if (d1Binding && typeof d1Binding.prepare === 'function') {
     try {
-      const categorySlug = data.categoryName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-      
-      // Ensure category exists in D1
-      await d1Binding
-        .prepare('INSERT OR IGNORE INTO BlogCategory (id, name, slug) VALUES (?, ?, ?)')
-        .bind(`cat-${categorySlug}`, data.categoryName, categorySlug)
-        .run();
-
-      // Retrieve or confirm category ID
-      const catRow = await d1Binding
-        .prepare('SELECT id FROM BlogCategory WHERE slug = ? LIMIT 1')
-        .bind(categorySlug)
-        .first();
-
-      const categoryId = catRow?.id || `cat-${categorySlug}`;
-
-      // Insert Blog Post
       await d1Binding
         .prepare(
-          `INSERT INTO BlogPost (id, slug, title, description, content, author, readingTime, published, publishedAt, updatedAt, seoTitle, seoDescription, categoryId, featuredImage)
-           VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?)`
+          `CREATE TABLE IF NOT EXISTS BlogPost (
+            id TEXT PRIMARY KEY,
+            slug TEXT UNIQUE,
+            title TEXT,
+            description TEXT,
+            content TEXT,
+            featuredImage TEXT,
+            author TEXT,
+            readingTime INTEGER,
+            published INTEGER DEFAULT 1,
+            publishedAt TEXT,
+            updatedAt TEXT,
+            seoTitle TEXT,
+            seoDescription TEXT,
+            categoryName TEXT
+          )`
+        )
+        .run();
+
+      await d1Binding
+        .prepare(
+          `INSERT OR REPLACE INTO BlogPost (id, slug, title, description, content, featuredImage, author, readingTime, published, publishedAt, updatedAt, seoTitle, seoDescription, categoryName)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?)`
         )
         .bind(
           id,
@@ -176,24 +175,23 @@ export async function createBlogPost(data: NewPostPayload, d1Binding?: any): Pro
           data.title,
           data.description,
           data.content,
+          '/images/blog/custom-web-dev.svg',
           author,
           readingTime,
           now,
           now,
           seoTitle,
           seoDescription,
-          categoryId,
-          '/images/blog/custom-web-dev.svg'
+          data.categoryName
         )
         .run();
 
-      console.log(`[HiveSmart DB] Successfully inserted post '${data.slug}' into Cloudflare D1.`);
+      console.log(`[HiveSmart DB] Post '${data.slug}' inserted into Cloudflare D1.`);
     } catch (err) {
-      console.warn('[HiveSmart DB] D1 insert failed, adding to static memory store:', err);
+      console.warn('[HiveSmart DB] D1 write failed, storing in memory:', err);
     }
   }
 
-  // Also maintain in-memory representation so current worker instance immediately reflects it
   const created: StaticBlogPost = {
     id,
     slug: data.slug,
@@ -220,7 +218,7 @@ export async function createBlogPost(data: NewPostPayload, d1Binding?: any): Pro
 }
 
 /**
- * Deletes a post from D1 and memory by slug
+ * Deletes a post by slug from D1 and memory
  */
 export async function deleteBlogPost(slug: string, d1Binding?: any): Promise<boolean> {
   if (d1Binding && typeof d1Binding.prepare === 'function') {
@@ -238,5 +236,3 @@ export async function deleteBlogPost(slug: string, d1Binding?: any): Promise<boo
   }
   return false;
 }
-
-
