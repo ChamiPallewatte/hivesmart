@@ -10,7 +10,11 @@ export default defineConfig({
     imageService: 'passthrough'
   }),
   session: false,
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) => !page.includes('/admin')
+    })
+  ],
   vite: {
     plugins: [tailwindcss()]
   }
