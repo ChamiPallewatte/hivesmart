@@ -50,7 +50,7 @@ const variantClasses = {
   secondary:
     'bg-sky-600 hover:bg-sky-500 text-white shadow-lg shadow-sky-900/20 border border-sky-500/30',
   outline:
-    'bg-transparent hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/40 hover:border-emerald-500',
+    'bg-emerald-500/10 hover:bg-emerald-500/25 text-emerald-300 font-bold border border-emerald-500/40 hover:border-emerald-400',
   header:
     'bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm font-semibold'
 }[variant];
@@ -72,7 +72,7 @@ const sizeClasses = {
 >
   <!-- WhatsApp Icon SVG -->
   <svg
-    class={`${size === 'sm' ? 'w-4 h-4' : 'w-5 h-5'} flex-shrink-0 fill-current text-white transition-transform group-hover:scale-110`}
+    class={`${size === 'sm' ? 'w-4 h-4' : 'w-5 h-5'} flex-shrink-0 fill-current ${variant === 'outline' ? 'text-emerald-400' : 'text-white'} transition-transform group-hover:scale-110`}
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
   >

@@ -15,7 +15,7 @@ function isActive(href: string) {
 ---
 
 <header
-  class="sticky top-0 z-40 w-full backdrop-blur-xl bg-white/90 dark:bg-[#061024]/90 border-b border-amber-500/20 dark:border-amber-500/15 shadow-sm transition-all duration-300"
+  class="sticky top-0 z-40 w-full backdrop-blur-2xl bg-[#050e22]/95 border-b border-amber-500/30 shadow-xl shadow-black/50 transition-all duration-300"
   id="main-header"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,35 +25,35 @@ function isActive(href: string) {
       <a
         href="/"
         class="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded-xl p-1"
-        aria-label="Hive smart Agency Homepage"
+        aria-label="HiveSmart Agency Homepage"
       >
         <img
           src="/images/logo-icon.png"
-          alt="Hive smart Logo Mark"
-          class="w-10 h-10 md:w-11 md:h-11 object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-sm"
+          alt="HiveSmart Logo Mark"
+          class="w-10 h-10 md:w-11 md:h-11 object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow"
           width="44"
           height="44"
           loading="eager"
         />
         <div class="flex flex-col">
-          <span class="text-xl md:text-2xl font-black tracking-tight text-[#081736] dark:text-white group-hover:text-amber-600 transition-colors">
-            Hive <span class="text-amber-500">smart</span>
+          <span class="text-xl md:text-2xl font-black tracking-tight text-white group-hover:text-amber-400 transition-colors">
+            Hive <span class="text-amber-400">smart</span>
           </span>
-          <span class="text-[9px] uppercase tracking-widest font-extrabold text-slate-500 dark:text-slate-400">
+          <span class="text-[9px] uppercase tracking-widest font-extrabold text-amber-400/90 mt-0.5">
             Digital Agency • LK & UAE
           </span>
         </div>
       </a>
 
       <!-- Desktop Navigation Links & Quick Search -->
-      <nav class="hidden md:flex items-center gap-1 lg:gap-2" aria-label="Main Navigation">
+      <nav class="hidden md:flex items-center gap-1.5 lg:gap-2.5" aria-label="Main Navigation">
         {SITE_CONFIG.navLinks.map((link) => (
           <a
             href={link.href}
             class={`px-3.5 py-2 rounded-xl text-sm font-bold transition-all duration-200 ${
               isActive(link.href)
-                ? 'text-amber-400 bg-amber-500/15 border border-amber-500/30 shadow-sm'
-                : 'text-slate-200 hover:text-amber-400 hover:bg-slate-800/80'
+                ? 'text-amber-300 bg-amber-500/20 border border-amber-500/40 shadow-sm'
+                : 'text-slate-100 hover:text-amber-400 hover:bg-slate-800/80'
             }`}
           >
             {link.label}
@@ -64,14 +64,14 @@ function isActive(href: string) {
         <button
           type="button"
           id="header-search-trigger"
-          class="ml-2 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#081736] border border-amber-500/30 text-xs font-semibold text-slate-300 hover:text-white hover:border-amber-400 hover:bg-slate-850 transition-all cursor-pointer shadow-sm"
+          class="ml-2 flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#081736] border border-amber-500/40 text-xs font-bold text-amber-400 hover:text-white hover:border-amber-300 hover:bg-amber-500/20 transition-all cursor-pointer shadow-md"
           aria-label="Open Spotlight Search"
         >
-          <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
           </svg>
-          <span class="hidden lg:inline">Search</span>
-          <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">⌘K</span>
+          <span class="hidden lg:inline text-white">Search</span>
+          <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-900 text-amber-400 border border-amber-500/30">⌘K</span>
         </button>
       </nav>
 
@@ -109,16 +109,16 @@ function isActive(href: string) {
         <button
           type="button"
           id="mobile-menu-toggle"
-          class="p-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
+          class="p-2.5 rounded-xl text-white bg-slate-800/90 hover:bg-slate-700 border border-amber-500/30 focus:outline-none focus:ring-2 focus:ring-amber-400"
           aria-label="Toggle Navigation Menu"
           aria-expanded="false"
           aria-controls="mobile-menu"
         >
-          <svg class="w-6 h-6" id="menu-icon-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          <svg class="w-6 h-6 text-white" id="menu-icon-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16m-7 6h7" />
           </svg>
-          <svg class="w-6 h-6 hidden" id="menu-icon-close" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <svg class="w-6 h-6 hidden text-white" id="menu-icon-close" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
@@ -129,16 +129,16 @@ function isActive(href: string) {
   <!-- Mobile Collapsible Menu -->
   <div
     id="mobile-menu"
-    class="hidden lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#061024]/98 backdrop-blur-2xl px-4 pt-4 pb-6 space-y-3"
+    class="hidden lg:hidden border-t border-amber-500/30 bg-[#081736]/98 backdrop-blur-2xl px-5 pt-4 pb-6 space-y-3 shadow-2xl"
   >
-    <nav class="space-y-1" aria-label="Mobile Navigation">
+    <nav class="space-y-1.5" aria-label="Mobile Navigation">
       {SITE_CONFIG.navLinks.map((link) => (
         <a
           href={link.href}
           class={`block px-4 py-3 rounded-xl text-base font-bold transition-colors ${
             isActive(link.href)
-              ? 'text-amber-600 dark:text-amber-400 bg-amber-500/10'
-              : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+              ? 'text-amber-400 bg-amber-500/20 border border-amber-500/40'
+              : 'text-white hover:bg-slate-800 hover:text-amber-400'
           }`}
         >
           {link.label}
@@ -146,9 +146,26 @@ function isActive(href: string) {
       ))}
     </nav>
 
+    <!-- Mobile Search Trigger -->
+    <div class="pt-2">
+      <button
+        type="button"
+        id="mobile-search-trigger"
+        class="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-slate-900 border border-amber-500/30 text-sm font-bold text-white hover:border-amber-400"
+      >
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <span>Search Solutions...</span>
+        </div>
+        <span class="text-xs text-amber-400 font-mono">Spotlight</span>
+      </button>
+    </div>
+
     <!-- Mobile WhatsApp Buttons -->
-    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-2">
-      <p class="text-xs font-bold uppercase tracking-wider text-slate-400 px-1">Direct Inquiries</p>
+    <div class="pt-4 border-t border-slate-800 space-y-2">
+      <p class="text-xs font-black uppercase tracking-wider text-amber-400 px-1">Direct Consultant Lines</p>
       <WhatsAppButton
         location="lk"
         variant="primary"
@@ -176,19 +193,26 @@ function isActive(href: string) {
     const iconOpen = document.getElementById('menu-icon-open');
     const iconClose = document.getElementById('menu-icon-close');
 
-    if (!toggle || !menu) return;
-
-    // Spotlight search trigger
-    const searchTrigger = document.getElementById('header-search-trigger');
-    searchTrigger?.addEventListener('click', () => {
+    function openSearch() {
       const searchInput = document.getElementById('search-input') as HTMLInputElement | null;
       if (searchInput) {
         searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        searchInput.focus();
+        setTimeout(() => {
+          searchInput.focus();
+        }, 300);
       } else {
         window.location.href = '/services/';
       }
+    }
+
+    // Spotlight search triggers
+    document.getElementById('header-search-trigger')?.addEventListener('click', openSearch);
+    document.getElementById('mobile-search-trigger')?.addEventListener('click', () => {
+      menu?.classList.add('hidden');
+      openSearch();
     });
+
+    if (!toggle || !menu) return;
 
     toggle.addEventListener('click', () => {
       const isExpanded = toggle.getAttribute('aria-expanded') === 'true';

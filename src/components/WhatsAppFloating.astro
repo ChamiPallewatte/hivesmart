@@ -14,18 +14,18 @@ const uaeTracking = getWhatsAppTrackingAttributes({ location: 'uae', placement: 
   <!-- Interactive Popover Menu -->
   <div
     id="wa-popup-menu"
-    class="hidden mb-3 w-72 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-4 shadow-2xl border border-slate-200/80 dark:border-slate-800 transition-all duration-300 origin-bottom-right"
+    class="hidden mb-3 w-80 rounded-3xl bg-[#081736] border border-amber-500/30 p-4 shadow-2xl transition-all duration-300 origin-bottom-right text-white"
     role="dialog"
     aria-label="Select WhatsApp Contact Hub"
   >
-    <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-100 dark:border-slate-800">
+    <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
       <div class="flex items-center gap-2">
-        <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
-        <p class="text-xs font-semibold uppercase tracking-wider text-slate-800 dark:text-slate-200">Instant WhatsApp Chat</p>
+        <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
+        <p class="text-xs font-bold uppercase tracking-wider text-white">Instant WhatsApp Chat</p>
       </div>
       <button
         id="wa-popup-close"
-        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg"
+        class="text-slate-400 hover:text-white p-1 rounded-lg"
         aria-label="Close WhatsApp options"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,7 +34,7 @@ const uaeTracking = getWhatsAppTrackingAttributes({ location: 'uae', placement: 
       </button>
     </div>
 
-    <p class="text-xs text-slate-600 dark:text-slate-400 mb-3 leading-relaxed">
+    <p class="text-xs text-slate-300 mb-3 leading-relaxed">
       Connect directly with our regional technical consultants for immediate project inquiries:
     </p>
 
@@ -44,17 +44,17 @@ const uaeTracking = getWhatsAppTrackingAttributes({ location: 'uae', placement: 
         href={lkUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 hover:border-emerald-300 dark:hover:border-emerald-500 transition-all group"
+        class="flex items-center justify-between p-2.5 rounded-2xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-emerald-400 transition-all group"
         {...lkTracking}
       >
         <div class="flex items-center gap-2.5">
           <span class="text-xl leading-none">🇱🇰</span>
           <div class="text-left">
-            <p class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors">Sri Lanka Hub</p>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400">{SITE_CONFIG.contacts.sriLanka.phoneDisplay}</p>
+            <p class="text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">Sri Lanka Hub</p>
+            <p class="text-[11px] text-slate-400">{SITE_CONFIG.contacts.sriLanka.phoneDisplay}</p>
           </div>
         </div>
-        <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">Chat</span>
+        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800">Chat</span>
       </a>
 
       <!-- Dubai UAE Hub -->
@@ -62,17 +62,17 @@ const uaeTracking = getWhatsAppTrackingAttributes({ location: 'uae', placement: 
         href={uaeUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 hover:border-emerald-300 dark:hover:border-emerald-500 transition-all group"
+        class="flex items-center justify-between p-2.5 rounded-2xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-emerald-400 transition-all group"
         {...uaeTracking}
       >
         <div class="flex items-center gap-2.5">
           <span class="text-xl leading-none">🇦🇪</span>
           <div class="text-left">
-            <p class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors">Dubai / UAE Hub</p>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400">{SITE_CONFIG.contacts.dubai.phoneDisplay}</p>
+            <p class="text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">Dubai / UAE Hub</p>
+            <p class="text-[11px] text-slate-400">{SITE_CONFIG.contacts.dubai.phoneDisplay}</p>
           </div>
         </div>
-        <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">Chat</span>
+        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800">Chat</span>
       </a>
     </div>
   </div>

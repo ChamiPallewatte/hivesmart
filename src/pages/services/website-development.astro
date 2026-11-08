@@ -33,15 +33,15 @@ const breadcrumbs = [
 
     <!-- Hero Header -->
     <header class="max-w-4xl mx-auto text-center my-10 md:my-16">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800 text-sky-600 dark:text-sky-400 text-xs font-extrabold uppercase tracking-widest mb-6">
-        Primary Agency Capability
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-black uppercase tracking-widest mb-6">
+        ⭐ Primary Agency Specialization
       </div>
 
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1] mb-6">
-        Custom Website Development That <span class="text-gradient">Converts Traffic Into Inquiries</span>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-[1.1] mb-6">
+        Custom Website Development That <span class="text-gradient-gold">Converts Traffic Into Inquiries</span>
       </h1>
 
-      <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed mb-8">
+      <p class="text-lg sm:text-xl text-slate-200 leading-relaxed mb-8 font-normal">
         We architect high-performance, conversion-engineered digital platforms for forward-thinking enterprises in Sri Lanka, Dubai, and international markets.
       </p>
 
@@ -69,7 +69,7 @@ const breadcrumbs = [
     </header>
 
     <!-- Visual Banner Mockup -->
-    <div class="my-12 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-2xl bg-slate-950 max-w-5xl mx-auto">
+    <div class="my-12 rounded-3xl overflow-hidden border border-amber-500/30 shadow-2xl bg-[#081736] max-w-5xl mx-auto">
       <img
         src="/images/services/web-dev.svg"
         alt="HiveSmart Custom Website Development Architecture"
@@ -81,29 +81,29 @@ const breadcrumbs = [
     <!-- Detailed Sub-Services Grid (10 Core Disciplines) -->
     <section class="py-16">
       <div class="text-center max-w-3xl mx-auto mb-12">
-        <span class="text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">Comprehensive Solutions</span>
-        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
+        <span class="text-xs font-black uppercase tracking-widest text-amber-400">Comprehensive Solutions</span>
+        <h2 class="text-3xl sm:text-4xl font-black text-white mt-1">
           Specialized Website Development Solutions
         </h2>
-        <p class="text-slate-600 dark:text-slate-300 mt-2 text-sm">
+        <p class="text-slate-300 mt-2 text-sm leading-relaxed">
           Every project is built specifically to address your unique business model, customer acquisition strategy, and brand aspirations.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {service.subServices.map((sub) => (
-          <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-sky-500/60 transition-all flex flex-col justify-between">
+          <div class="p-6 rounded-3xl bg-[#081736] border border-amber-500/25 shadow-xl hover:border-amber-400 transition-all flex flex-col justify-between card-glow-hover">
             <div>
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">
+              <h3 class="text-lg font-black text-white mb-2">
                 {sub.title}
               </h3>
-              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              <p class="text-xs text-slate-300 leading-relaxed mb-4 font-normal">
                 {sub.shortDesc}
               </p>
-              <ul class="space-y-1.5 mb-6">
+              <ul class="space-y-2 mb-6">
                 {sub.features.map((feat) => (
-                  <li class="text-xs text-slate-700 dark:text-slate-300 flex items-center gap-2 font-medium">
-                    <svg class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <li class="text-xs text-slate-200 flex items-center gap-2 font-medium">
+                    <svg class="w-4 h-4 text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                     </svg>
                     <span>{feat}</span>
@@ -111,7 +111,7 @@ const breadcrumbs = [
                 ))}
               </ul>
             </div>
-            <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+            <div class="pt-4 border-t border-slate-800">
               <WhatsAppButton
                 location="lk"
                 serviceName={sub.title}
@@ -128,10 +128,10 @@ const breadcrumbs = [
     </section>
 
     <!-- Benefits Section -->
-    <section class="py-16 bg-slate-50 dark:bg-slate-900/40 rounded-3xl p-8 sm:p-12 my-8 border border-slate-200/60 dark:border-slate-800">
+    <section class="py-16 bg-[#081736]/80 rounded-3xl p-8 sm:p-12 my-8 border border-amber-500/25">
       <div class="max-w-3xl mb-10">
-        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Competitive Edge</span>
-        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
+        <span class="text-xs font-black uppercase tracking-widest text-emerald-400">Competitive Edge</span>
+        <h2 class="text-3xl sm:text-4xl font-black text-white mt-1">
           Why Businesses in Sri Lanka & Dubai Choose HiveSmart
         </h2>
       </div>
@@ -139,12 +139,12 @@ const breadcrumbs = [
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         {service.benefits.map((b) => (
           <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-lg flex-shrink-0 mt-1">
+            <div class="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center font-bold text-lg flex-shrink-0 mt-1">
               ✓
             </div>
             <div>
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1">{b.title}</h3>
-              <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{b.desc}</p>
+              <h3 class="text-lg font-bold text-white mb-1">{b.title}</h3>
+              <p class="text-sm text-slate-300 leading-relaxed font-normal">{b.desc}</p>
             </div>
           </div>
         ))}
@@ -154,95 +154,74 @@ const breadcrumbs = [
     <!-- 5-Step Development Process -->
     <section class="py-16">
       <div class="text-center max-w-3xl mx-auto mb-12">
-        <span class="text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">Methodology</span>
-        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
+        <span class="text-xs font-black uppercase tracking-widest text-amber-400">Methodology</span>
+        <h2 class="text-3xl sm:text-4xl font-black text-white mt-1">
           Our 5-Step Web Engineering Lifecycle
         </h2>
-        <p class="text-slate-600 dark:text-slate-300 mt-2 text-sm">
-          A predictable, transparent roadmap from initial concept to live Cloudflare edge deployment.
-        </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
-        {service.process.map((p) => (
-          <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        {service.process.map((step) => (
+          <div class="p-6 rounded-2xl bg-[#081736] border border-slate-800 hover:border-amber-500/40 transition-colors flex flex-col justify-between">
             <div>
-              <span class="text-3xl font-black text-slate-200 dark:text-slate-800 block mb-3">0{p.step}</span>
-              <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">{p.title}</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{p.desc}</p>
+              <span class="text-2xl font-black font-mono text-amber-400">0{step.step}</span>
+              <h3 class="text-base font-bold text-white mt-2 mb-2">{step.title}</h3>
+              <p class="text-xs text-slate-300 leading-relaxed font-normal">{step.desc}</p>
             </div>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <!-- Suitable Customer Profiles -->
-    <section class="py-12 border-t border-slate-200 dark:border-slate-800">
-      <div class="max-w-3xl mb-8">
-        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
-          Who This Service Is Designed For
-        </h2>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {service.targetAudience.map((audience) => (
-          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center gap-3">
-            <span class="text-emerald-500 font-bold">→</span>
-            <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">{audience}</span>
           </div>
         ))}
       </div>
     </section>
 
     <!-- FAQs Section -->
-    <section class="py-16 border-t border-slate-200 dark:border-slate-800">
-      <div class="text-center max-w-3xl mx-auto mb-12">
-        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Got Questions?</span>
-        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
-          Website Development FAQs
+    <section class="py-16 max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <span class="text-xs font-black uppercase tracking-widest text-amber-400">Questions Answered</span>
+        <h2 class="text-3xl sm:text-4xl font-black text-white mt-1">
+          Frequently Asked Questions
         </h2>
       </div>
 
-      <div class="max-w-3xl mx-auto space-y-4">
+      <div class="space-y-4">
         {service.faqs.map((faq) => (
-          <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-            <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 flex items-start gap-2">
-              <span class="text-sky-500 font-black">Q.</span>
-              <span>{faq.question}</span>
-            </h3>
-            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-6">
-              {faq.answer}
-            </p>
+          <div class="p-6 rounded-2xl bg-[#081736] border border-slate-800">
+            <h3 class="text-base font-bold text-white mb-2">{faq.question}</h3>
+            <p class="text-sm text-slate-300 leading-relaxed font-normal">{faq.answer}</p>
           </div>
         ))}
       </div>
     </section>
 
     <!-- Related Services -->
-    <section class="py-12 border-t border-slate-200 dark:border-slate-800">
-      <div class="flex items-center justify-between mb-8">
-        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Explore Complementary Capabilities</h2>
+    <section class="py-16 border-t border-slate-800">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl font-black text-white">Other Core Specializations</h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
         {relatedServices.map((rel) => (
-          <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <div class="p-6 rounded-2xl bg-[#081736] border border-amber-500/25 flex flex-col justify-between">
             <div>
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white">{rel.title}</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">{rel.tagline}</p>
+              <span class="text-xs font-bold uppercase text-amber-400">{rel.badge}</span>
+              <h3 class="text-xl font-bold text-white mt-1 mb-2">{rel.title}</h3>
+              <p class="text-xs text-slate-300 leading-relaxed mb-4">{rel.shortDescription}</p>
             </div>
-            <a href={`/services/${rel.slug}/`} class="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline">
-              View Service →
+            <a
+              href={`/services/${rel.slug}/`}
+              class="text-xs font-bold text-amber-400 hover:text-amber-300 inline-flex items-center gap-1"
+            >
+              <span>Explore {rel.title}</span>
+              <span>→</span>
             </a>
           </div>
         ))}
       </div>
     </section>
 
+    <!-- Bottom WhatsApp Lead CTA -->
+    <CTA
+      headline="Ready for a High-Converting Website?"
+      description="Connect directly with our technical consultants in Sri Lanka and Dubai to discuss your business website."
+      serviceName="Website Development"
+    />
   </div>
-
-  <CTA
-    headline="Ready to Build Your High-Performance Website?"
-    description="Send us a message on WhatsApp for a free technical consultation and transparent project scope."
-    serviceName="Website Development"
-  />
 </BaseLayout>
-

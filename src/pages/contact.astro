@@ -27,15 +27,15 @@ const serviceOptions = [
 
     <!-- Hero Header -->
     <header class="max-w-3xl mx-auto text-center my-10 md:my-14">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-widest mb-6">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-xs font-black uppercase tracking-widest mb-6">
         Zero Form Friction • 100% Direct WhatsApp
       </div>
 
-      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6">
-        Start Your Project In Seconds <span class="text-gradient">Via WhatsApp</span>
+      <h1 class="text-4xl sm:text-5xl font-black tracking-tight text-white mb-6">
+        Start Your Project In Seconds <span class="text-gradient-gold">Via WhatsApp</span>
       </h1>
 
-      <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="text-lg text-slate-200 leading-relaxed font-normal">
         We respect your time. Instead of slow email forms that get buried in inboxes, we provide direct WhatsApp and phone channels to our senior consultants.
       </p>
     </header>
@@ -44,191 +44,145 @@ const serviceOptions = [
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-12">
       
       <!-- 1. Sri Lanka Hub Card -->
-      <div class="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border-2 border-emerald-500/40 shadow-xl shadow-emerald-900/5 flex flex-col justify-between">
+      <div class="p-8 sm:p-10 rounded-3xl bg-[#081736] border-2 border-emerald-500/40 shadow-2xl flex flex-col justify-between card-glow-hover">
         <div>
-          <div class="flex items-center justify-between pb-6 border-b border-slate-100 dark:border-slate-800 mb-6">
+          <div class="flex items-center justify-between pb-6 border-b border-slate-800 mb-6">
             <div class="flex items-center gap-3">
               <span class="text-4xl">🇱🇰</span>
               <div>
-                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Regional Hub</span>
-                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Sri Lanka</h2>
+                <span class="text-xs font-black uppercase tracking-wider text-emerald-400">Regional Hub</span>
+                <h2 class="text-2xl font-black text-white">Sri Lanka</h2>
               </div>
             </div>
-            <span class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
-              Active Now
+            <span class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono">
+              ● Active Now
             </span>
           </div>
 
           <div class="space-y-4 mb-8 text-sm">
             <div>
-              <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Office Location</p>
-              <p class="font-semibold text-slate-900 dark:text-white text-base">
+              <p class="text-xs font-black uppercase tracking-wider text-slate-400 mb-1">Office Location</p>
+              <p class="font-bold text-white text-base">
                 {SITE_CONFIG.contacts.sriLanka.fullAddress}
               </p>
             </div>
 
             <div>
-              <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Direct Phone Line</p>
-              <a
-                href={`tel:${SITE_CONFIG.contacts.sriLanka.phoneTel}`}
-                class="text-lg font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors inline-flex items-center gap-2"
-              >
-                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                <span>{SITE_CONFIG.contacts.sriLanka.phoneDisplay}</span>
+              <p class="text-xs font-black uppercase tracking-wider text-slate-400 mb-1">Direct Phone Line</p>
+              <a href={`tel:${SITE_CONFIG.contacts.sriLanka.phoneInternational}`} class="text-lg font-bold text-amber-400 hover:text-amber-300 transition-colors font-mono">
+                {SITE_CONFIG.contacts.sriLanka.phoneDisplay}
               </a>
             </div>
 
             <div>
-              <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Google Maps</p>
-              <a
-                href={SITE_CONFIG.contacts.sriLanka.googleMapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-sky-600 dark:text-sky-400 hover:underline inline-flex items-center gap-1.5 font-medium"
-              >
-                <span>View Kegalle Office Location</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
+              <p class="text-xs font-black uppercase tracking-wider text-slate-400 mb-1">Operating Hours</p>
+              <p class="text-slate-300 text-xs">
+                {SITE_CONFIG.contacts.sriLanka.hours} (IST)
+              </p>
             </div>
           </div>
         </div>
 
-        <div class="space-y-3 pt-6 border-t border-slate-100 dark:border-slate-800">
+        <div class="pt-6 border-t border-slate-800 space-y-3">
           <WhatsAppButton
             location="lk"
             variant="primary"
             size="lg"
             fullWidth={true}
-            label="Chat on WhatsApp (Sri Lanka)"
-            placement="contact_lk"
+            label="Chat on Sri Lanka WhatsApp"
+            placement="contact_page_lk"
           />
           <a
-            href={`tel:${SITE_CONFIG.contacts.sriLanka.phoneTel}`}
-            class="w-full inline-flex items-center justify-center px-6 py-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-400 font-bold text-sm text-slate-700 dark:text-slate-300 transition-colors"
+            href={`tel:${SITE_CONFIG.contacts.sriLanka.phoneInternational}`}
+            class="w-full py-3.5 px-4 rounded-xl text-center text-sm font-bold border border-slate-700 hover:border-amber-400 text-slate-200 hover:text-amber-400 transition-colors block"
           >
-            Call {SITE_CONFIG.contacts.sriLanka.phoneDisplay}
+            Direct Call: {SITE_CONFIG.contacts.sriLanka.phoneDisplay}
           </a>
         </div>
       </div>
 
       <!-- 2. Dubai / UAE Hub Card -->
-      <div class="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border-2 border-sky-500/40 shadow-xl shadow-sky-900/5 flex flex-col justify-between">
+      <div class="p-8 sm:p-10 rounded-3xl bg-[#081736] border-2 border-amber-500/40 shadow-2xl flex flex-col justify-between card-glow-hover">
         <div>
-          <div class="flex items-center justify-between pb-6 border-b border-slate-100 dark:border-slate-800 mb-6">
+          <div class="flex items-center justify-between pb-6 border-b border-slate-800 mb-6">
             <div class="flex items-center gap-3">
               <span class="text-4xl">🇦🇪</span>
               <div>
-                <span class="text-xs font-extrabold uppercase tracking-wider text-sky-600 dark:text-sky-400">Regional Hub</span>
-                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Dubai / UAE</h2>
+                <span class="text-xs font-black uppercase tracking-wider text-amber-400">Regional Hub</span>
+                <h2 class="text-2xl font-black text-white">Dubai / UAE</h2>
               </div>
             </div>
-            <span class="text-xs font-bold px-3 py-1 rounded-full bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-300">
-              Active Now
+            <span class="text-xs font-bold px-3 py-1 rounded-full bg-amber-950 text-amber-300 border border-amber-800 font-mono">
+              ● Active Now
             </span>
           </div>
 
           <div class="space-y-4 mb-8 text-sm">
             <div>
-              <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Office Location</p>
-              <p class="font-semibold text-slate-900 dark:text-white text-base">
+              <p class="text-xs font-black uppercase tracking-wider text-slate-400 mb-1">Office Location</p>
+              <p class="font-bold text-white text-base">
                 {SITE_CONFIG.contacts.dubai.fullAddress}
               </p>
             </div>
 
             <div>
-              <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Direct Phone Line</p>
-              <a
-                href={`tel:${SITE_CONFIG.contacts.dubai.phoneTel}`}
-                class="text-lg font-bold text-slate-900 dark:text-white hover:text-sky-600 dark:hover:text-sky-400 transition-colors inline-flex items-center gap-2"
-              >
-                <svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                <span>{SITE_CONFIG.contacts.dubai.phoneDisplay}</span>
+              <p class="text-xs font-black uppercase tracking-wider text-slate-400 mb-1">Direct Phone Line</p>
+              <a href={`tel:${SITE_CONFIG.contacts.dubai.phoneInternational}`} class="text-lg font-bold text-amber-400 hover:text-amber-300 transition-colors font-mono">
+                {SITE_CONFIG.contacts.dubai.phoneDisplay}
               </a>
             </div>
 
             <div>
-              <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Google Maps</p>
-              <a
-                href={SITE_CONFIG.contacts.dubai.googleMapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-sky-600 dark:text-sky-400 hover:underline inline-flex items-center gap-1.5 font-medium"
-              >
-                <span>View Al Rigga, Dubai Location</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
+              <p class="text-xs font-black uppercase tracking-wider text-slate-400 mb-1">Operating Hours</p>
+              <p class="text-slate-300 text-xs">
+                {SITE_CONFIG.contacts.dubai.hours} (GST)
+              </p>
             </div>
           </div>
         </div>
 
-        <div class="space-y-3 pt-6 border-t border-slate-100 dark:border-slate-800">
+        <div class="pt-6 border-t border-slate-800 space-y-3">
           <WhatsAppButton
             location="uae"
             variant="secondary"
             size="lg"
             fullWidth={true}
-            label="Chat on WhatsApp (Dubai)"
-            placement="contact_uae"
+            label="Chat on Dubai WhatsApp"
+            placement="contact_page_uae"
           />
           <a
-            href={`tel:${SITE_CONFIG.contacts.dubai.phoneTel}`}
-            class="w-full inline-flex items-center justify-center px-6 py-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-400 font-bold text-sm text-slate-700 dark:text-slate-300 transition-colors"
+            href={`tel:${SITE_CONFIG.contacts.dubai.phoneInternational}`}
+            class="w-full py-3.5 px-4 rounded-xl text-center text-sm font-bold border border-slate-700 hover:border-amber-400 text-slate-200 hover:text-amber-400 transition-colors block"
           >
-            Call {SITE_CONFIG.contacts.dubai.phoneDisplay}
+            Direct Call: {SITE_CONFIG.contacts.dubai.phoneDisplay}
           </a>
         </div>
       </div>
 
     </div>
 
-    <!-- Quick Topic-Based WhatsApp Triggers -->
-    <section class="my-16 p-8 sm:p-12 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+    <!-- Pre-Filled Topic Selector for Quick WhatsApp Inquiries -->
+    <div class="my-16 p-8 sm:p-12 rounded-3xl bg-[#081736]/80 border border-amber-500/25">
       <div class="text-center max-w-2xl mx-auto mb-8">
-        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">
-          Choose a Service to Start Chat with Pre-Filled Details
-        </h3>
-        <p class="text-sm text-slate-500 mt-1">
-          Tap any service below to open WhatsApp with a pre-configured topic message:
+        <h3 class="text-2xl font-black text-white">Select a Topic to Prefill Your WhatsApp Message</h3>
+        <p class="text-slate-300 text-sm mt-2 font-normal">
+          Click any service below to open WhatsApp with your chosen project details ready to send.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {serviceOptions.map((opt) => (
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
-            <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2">{opt.name}</h4>
-            <div class="flex items-center gap-2 mt-2">
-              <WhatsAppButton
-                location="lk"
-                serviceName={opt.name}
-                customMessage={opt.msg}
-                label="LK WhatsApp"
-                variant="primary"
-                size="sm"
-                placement="contact_topic_grid"
-              />
-              <WhatsAppButton
-                location="uae"
-                serviceName={opt.name}
-                customMessage={opt.msg}
-                label="Dubai WhatsApp"
-                variant="secondary"
-                size="sm"
-                placement="contact_topic_grid"
-              />
-            </div>
-          </div>
+          <a
+            href={`https://wa.me/94778091278?text=${encodeURIComponent(opt.msg)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-between p-4 rounded-2xl bg-slate-900 border border-slate-800 hover:border-amber-400 hover:bg-slate-850 text-white font-bold text-sm transition-all group"
+          >
+            <span>{opt.name}</span>
+            <span class="text-emerald-400 group-hover:translate-x-1 transition-transform">💬 →</span>
+          </a>
         ))}
       </div>
-    </section>
-
+    </div>
   </div>
 </BaseLayout>
-
